@@ -1,0 +1,71 @@
+
+.el-header, .el-footer {
+  background-color: #6CA9E2;
+  color: #333;
+}
+.el-header .user-setting {
+  color: #fff;
+} 
+.el-aside {
+  background-color: #1B8AF2;
+  color: #333;
+}
+.el-aside .head-logo {
+  color:#fff;
+}
+.el-aside .el-menu {
+  background-color: #1B8AF2;
+}
+.el-menu--vertical .el-menu {
+  background-color: #1B8AF2;
+}
+.el-header .menu-container {
+  background-color: #6CA9E2;
+}
+.el-menu--horizontal .el-menu {
+  background-color: #6CA9E2;
+}
+.el-menu--horizontal .el-menu .el-menu-item {
+  background-color: #6CA9E2;
+}
+.menu-container.is-horizontal .el-menu-item  {
+  background-color: #6CA9E2;
+}
+.menu-container.is-vertical .el-submenu {
+  background-color: #1B8AF2;
+}
+.menu-container .el-submenu {
+  background-color: #6CA9E2;
+}
+.menu-container > .el-submenu:not(.is-disabled):focus, .el-submenu:not(.is-disabled):hover {
+  background-color: #1890FF;
+}
+.menu-container > .el-submenu .el-submenu__title:focus, .el-submenu__title:hover {
+  background-color: #1890FF !important;
+}
+.menu-container > .el-menu-item:not(.is-disabled):focus, .el-menu-item:not(.is-disabled):hover {
+  background-color: #1890FF !important;
+}
+.menu-container > .el-menu-item.menu-containe.el-menu-item {
+  background-color: #1890FF;
+}
+.menu-container .el-submenu__title i {
+  color: #fff;
+}
+.menu-container .el-menu-item i {
+  color: #fff;
+}
+.el-menu--popup .el-menu-item i {
+  color: #fff;
+}
+.el-menu--vertical .el-submenu__title i {
+  color: #fff;
+}
+.el-menu--vertical .el-menu-item i {
+  color: #fff;
+}
+.el-main {
+  background-color: #E9EEF3;
+  color: #333;
+  padding:0px;
+}

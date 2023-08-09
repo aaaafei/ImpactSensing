@@ -1,0 +1,60 @@
+newmtl Asphalt_Shoulder_4-3、梅子岭隧道K10洞口.dgn_Default-3D_Bentley-Civil_139d_vis
+    Ns 5.000000
+    Kd 0.701961 0.701961 0.701961
+    Ks 1.000000 1.000000 1.000000
+
+newmtl Asphalt_Top_Course_4-3、梅子岭隧道K10洞口.dgn_Default-3D_Bentley-Civil_139e_vis
+    Ns 5.000000
+    Kd 0.701961 0.701961 0.701961
+    Ks 1.000000 1.000000 1.000000
+
+newmtl Concrete_Pavement_4-3、梅子岭隧道K10洞口.dgn_Default-3D_Bentley-Civil_139f_vis
+    Ns 2.000000
+    Kd 1.000000 1.000000 1.000000
+    Ks 1.000000 1.000000 1.000000
+
+newmtl Conc._Retaining_Wall_4-3、梅子岭隧道K10洞口.dgn_Default-3D_Bentley-Civil_13a0_vis
+    Ns 1.000000
+    Kd 1.000000 1.000000 1.000000
+    Ks 1.000000 1.000000 1.000000
+
+newmtl Curb_and_Gutter_4-3、梅子岭隧道K10洞口.dgn_Default-3D_Bentley-Civil_13a1_vis
+    Ns 2.000000
+    Kd 1.000000 1.000000 1.000000
+    Ks 1.000000 1.000000 1.000000
+
+newmtl Aggregate_Base_2_4-3、梅子岭隧道K10洞口.dgn_Default-3D_Bentley-Civil_13a2_vis
+    Ns 5.000000
+    Kd 1.000000 1.000000 1.000000
+    Ks 1.000000 1.000000 1.000000
+
+newmtl Bridge_Column_4-3、梅子岭隧道K10洞口.dgn_Default-3D_255_255_255_vis
+    Ns 0.000000
+    Kd 1.000000 1.000000 1.000000
+    Ks 1.000000 1.000000 1.000000
+
+    map_Kd 
+
+newmtl Brick_old_copenhagen_4-3、梅子岭隧道K10洞口.dgn_Default-3D_Blocks&Bricks_1bcc_vis
+    Ns 2.000000
+    Kd 1.000000 1.000000 1.000000
+    Ks 1.000000 1.000000 1.000000
+
+    map_Kd C:\ProgramData\Bentley\connectsharedcontent\materials\patterns\Brick50.jpg
+
+newmtl Grass_Areas_4-3、梅子岭隧道K10洞口.dgn_Default-3D_Bentley-Civil_1cd7e_vis
+    Ns 10.000000
+    Kd 1.000000 1.000000 1.000000
+    Ks 1.000000 1.000000 1.000000
+
+newmtl Earth_Shoulder_4-3、梅子岭隧道K10洞口.dgn_Default-3D_Bentley-Civil_1cd7f_vis
+    Ns 2.000000
+    Kd 1.000000 1.000000 1.000000
+    Ks 1.000000 1.000000 1.000000
+
+newmtl BC2_Exterior_4-3、梅子岭隧道K10洞口.dgn_Default-3D_lightwidgets_1eb44_vis
+    Ns 1.000000
+    Kd 1.000000 1.000000 1.000000
+    Ks 1.000000 1.000000 1.000000
+
+    map_Kd C:\ProgramData\Bentley\connectsharedcontent\materials\patterns\brick19.jpg
