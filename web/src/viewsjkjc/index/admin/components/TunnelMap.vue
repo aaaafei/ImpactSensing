@@ -1,98 +1,95 @@
 <template>
   <div>
-    <div class="box-card2-div">
+    <div>
       <div class="up-map-div-top" style="width:80%;min-height:60px">
         <div style="display: inline;margin-right: 2px;" v-for="(item, index) in carouselList" :key="index">
-          <el-button type="primary" size="mini" plain @click="locateCompay(index)" v-if="index == activeIndex">{{ item.name }}</el-button>
-          <el-button type="info" size="mini" plain  @click="locateCompay(index)" v-else>{{ item.name }}</el-button>
+          <el-button type="primary" size="mini" plain @click="locateCompay(index)" v-if="index == activeIndex">{{
+            item.name }}</el-button>
+          <el-button type="info" size="mini" plain @click="locateCompay(index)" v-else>{{ item.name }}</el-button>
         </div>
       </div>
-      
-      <baidu-map id="bmap" class="box-card2-div" :scroll-wheel-zoom="true" :center="center" :zoom="zoom" @ready="handler">
+
+      <div class="up-map-div-left">
+        <div style="text-align: center;font-size: 20px;font-weight: bold;">{{ currentPosition.title }}</div>
+        <div style="text-indent: 32px;">{{ currentPosition.note }}</div>
+      </div>
+
+      <div class="up-map-div-bottom">
+        <div style="display: inline-block;float: left;padding-left: 5px;padding-right: 2px;">
+          <span style="color: #1684FC;"><br>现<br>场<br>图<br>片</span>
+        </div>
+        <!-- <div>
+          <el-carousel :interval="4000" type="card" height="150px">
+            <el-carousel-item v-for="item in 6" :key="item">
+              <h3 class="medium">{{ item }}</h3>
+            </el-carousel-item>
+          </el-carousel>
+        </div> -->
+        <div style="display: inline-block;overflow-x: scroll;overflow-x: hidden;">
+          <img src="../../../../../static/images/demo/xc001.png" alt="" class="img-mapon">
+          <img src="../../../../../static/images/demo/xc002.png" alt="" class="img-mapon">
+          <img src="../../../../../static/images/demo/xc003.png" alt="" class="img-mapon">
+          <img src="../../../../../static/images/demo/xc004.png" alt="" class="img-mapon">
+          <img src="../../../../../static/images/demo/xc001.png" alt="" class="img-mapon">
+          <img src="../../../../../static/images/demo/xc002.png" alt="" class="img-mapon">
+        </div>
+
+      </div>
+
+      <baidu-map id="bmap" class="map" :scroll-wheel-zoom="true" :center="center" :zoom="zoom" @ready="handler">
       </baidu-map>
+
+      <device-info :deviceInfoDialog="deviceInfoDialog" @changeDeviceInfoDialog="changeDeviceInfoDialog"></device-info>
     </div>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
+import DeviceInfo from './DeviceInfo';
 export default {
+  components: {
+    DeviceInfo,
+  },
   data: function () {
     return {
       map: null,
       bmap: null,
+      deviceInfoDialog: false,
       markerList: [],//风险源点位对象集合
-      markerLevelMap: { level_b: [], level_c: [], level_d: [] },
-      yhMarkerList: [],//隐患点位对象集合
-      fxyDialogVisible: false,//风险源点位详情弹窗显示开关        
-      fxyStatObj: {},//当前选中的风险源点位信息对象
-      yhDialogVisible: false,//隐患点位详情弹窗显示开关
-      yhStatObj: {},//当前选中的隐患点位信息对象
-      levelDict: [],
-      pdMap: {},//按人员统计巡查进度数据集
-      riskSourceCheckBox: { level_b: true, level_c: true, level_d: true },
-      principalSelectData: [],
-      userInfo: {},
       carouselList: [{
-        orgID: 34,
-        jd: 118.870607,
-        wd: 32.147963,
-        zoom:17,
-        name: '南京新港粮油食品市场'
+        id: 34,
+        jd: 118.90185,
+        wd: 32.055767,
+        zoom: 20,
+        name: '马群站'
       }, {
-        orgID: 61,
-        jd: 118.953854,
-        wd: 32.171023,
-        zoom:17,
-        name: '南京石埠桥粮食储备库有限公司'
-      }, {
-        orgID: 74,
-        jd: 118.88173,
-        wd: 32.344272,
-        zoom:17,
-        name: '南京灵山粮食储备库有限公司'
-      }, {
-        orgID: 76,
-        jd: 119.088441,
-        wd: 32.218902,
-        zoom:17,
-        name: '南京现代粮食物流有限公司'
+        id: 61,
+        jd: 118.820464,
+        wd: 32.117678,
+        zoom: 18,
+        name: '迈晓区间'
       }],
       center: { lng: 0, lat: 0 },
       zoom: null,
-      hasGroupUser: '1',//是否集团用户 1:是 2:否
-      iconList: [
-        this.$STATIC_PREFIX + '/images/icon/t1.png',
-        this.$STATIC_PREFIX + '/images/icon/fa-life-ring.png',
-        this.$STATIC_PREFIX + '/images/icon/fa-check-square.png',
-        this.$STATIC_PREFIX + '/images/icon/fa-tasks.png',//'/images/icon/fa-medium.png',
-        this.$STATIC_PREFIX + '/images/icon/fa-book.png',
-        this.$STATIC_PREFIX + '/images/icon/fa-users.png',
-        this.$STATIC_PREFIX + '/images/icon/fa-file-alt.png',
-        this.$STATIC_PREFIX + '/images/icon/fa-ambulance.png',
-        this.$STATIC_PREFIX + '/images/icon/fa-bullhorn.png',
-        this.$STATIC_PREFIX + '/images/icon/fa-tasks.png',
-        this.$STATIC_PREFIX + '/images/icon/fa-chart-pie.png',
-        this.$STATIC_PREFIX + '/images/icon/fa-chart-area.png',//'/images/icon/fa-comments.png',
-        this.$STATIC_PREFIX + '/images/icon/fa-chart-area.png',
-        this.$STATIC_PREFIX + '/images/icon/risk_b.png',
-        this.$STATIC_PREFIX + '/images/icon/risk_c.png',
-        this.$STATIC_PREFIX + '/images/icon/risk_d.png',
-        this.$STATIC_PREFIX + '/images/icon/yh_red.png',
-        this.$STATIC_PREFIX + '/images/icon/yh_yellow.png',
-        this.$STATIC_PREFIX + '/images/icon/an_quan_guan_li.png',
-        this.$STATIC_PREFIX + '/images/icon/dai_ban_shi_xiang.png',
-        this.$STATIC_PREFIX + '/images/icon/tong_zhi_gong_gao.png',
-        this.$STATIC_PREFIX + '/images/icon/gong_zuo_jian_bao.png',
-        this.$STATIC_PREFIX + '/images/icon/feng_xian_yuan_guan_kong.png',
-        this.$STATIC_PREFIX + '/images/icon/yin_huan_pai_cha.png',
-      ],
-      enableCarousel:true,
-      activeIndex:0,
+      enableCarousel: true,
+      activeIndex: 0,
+      currentPosition: { title: "", note: "" },
+      currentPics: []
     }
   },
   mounted() {
-    this.carouselCompany();
+    setTimeout(() => {
+      this.carouselCompany();
+      this.showDeviceOnMap();
+      this.getPosInfo();
+    }, 1500);
+
+  },
+  watch: {
+    activeIndex(newv, oldv) {
+      this.getPosInfo();
+    },
   },
   methods: {
     handler({ BMap, map }) {
@@ -111,20 +108,19 @@ export default {
       //   this.initStatPoint();
     },
     carouselCompany() {
-      let interval = 1000*8;
+      let interval = 1000 * 8;
       let count = 0;
-      setInterval((e)=>{
-        if(!this.enableCarousel) return null;
-        if(this.carouselList.length == 0) return null;
+      setInterval((e) => {
+        if (!this.enableCarousel) return null;
+        if (this.carouselList.length == 0) return null;
         this.activeIndex = count % this.carouselList.length;
         let selItem = this.carouselList[this.activeIndex];
-        // this.showRiskSourceOnMap(selItem.orgID);
         this.map.panTo(new BMap.Point(selItem.jd, selItem.wd), 1500);
         this.map.setZoom(selItem.zoom);
-        
+
         count += 1;
         // console.log(this.activeIndex, selItem);
-      },interval);
+      }, interval);
 
     },
     locateCompay(index) {
@@ -133,14 +129,13 @@ export default {
       let selItem = this.carouselList[this.activeIndex];
       this.map.panTo(new BMap.Point(selItem.jd, selItem.wd), 1500);
       this.map.setZoom(selItem.zoom);
-      // this.showRiskSourceOnMap(selItem.orgID);
     },
-    showRiskSourceOnMap(org_id){
+    showDeviceOnMap() {
       this.$request({
         url: '/riskSource/getRiskSourcePageData/1/1000',
         method: 'POST',
         data: {
-          org_id: org_id
+          pos_id: ""
         }
       }).then(res => {
         // console.log("返回的点位数据",res);
@@ -152,66 +147,117 @@ export default {
           this.markerList = [];
           for (var i = 0; i < res.data.result_data.list.length; i++) {
             var stationObj = res.data.result_data.list[i];
-            //console.log("点位信息",stationObj);
-            var iconUrl = '';
-            if (stationObj.level == 'D' || stationObj.level == 'd') {
-              iconUrl = this.iconList[15];
-            } else if (stationObj.level == 'C' || stationObj.level == 'c') {
-              iconUrl = this.iconList[14];
-            } else if (stationObj.level == 'B' || stationObj.level == 'b') {
-              iconUrl = this.iconList[13];
+            let iconUrl = "";
+            if (stationObj.status == "1") {
+              iconUrl = '../../../../../static/images/demo/dun-green.png';
+            } else {
+              iconUrl = '../../../../../static/images/demo/dun-red.png';
             }
-            var myIcon = new BMap.Icon(iconUrl, new BMap.Size(21, 32));
-            //myIcon.setAnchor(new BMap.Size(10,32));
+            var myIcon = new BMap.Icon(iconUrl, new BMap.Size(50, 50));
+            // var myIcon = new BMapGL.Icon(iconUrl, new BMapGL.Size(48, 48));
             //标记点位
+            // var marker = new BMap.Marker(new BMap.Point(stationObj.longitude, stationObj.latitude));
             var marker = new BMap.Marker(new BMap.Point(stationObj.longitude, stationObj.latitude), { icon: myIcon });
-
-            var label = new BMap.Label("<font color='#0F0F0F'>" + stationObj.name + "</font>", { offset: new BMap.Size(20, -10) });
+            var label = new BMap.Label("<font color='#0F0F0F'>" + stationObj.code + ":" + stationObj.battery + "</font>", { offset: new BMap.Size(-10, -20) });
             label.setStyle({ "border-color": "#ffffff" });
-            // marker.setLabel(label);
+            marker.setLabel(label);
+            marker.addEventListener('click', (e) => {
+              console.log(stationObj);
+              this.deviceInfoDialog = true;
+            });
             this.map.addOverlay(marker);
-            // this.markerList.push(marker);
-            //
-            if (stationObj.level == 'D' || stationObj.level == 'd') {
-              this.markerLevelMap.level_d.push(marker);
-            } else if (stationObj.level == 'C' || stationObj.level == 'c') {
-              this.markerLevelMap.level_c.push(marker);
-            } else if (stationObj.level == 'B' || stationObj.level == 'b') {
-              this.markerLevelMap.level_b.push(marker);
-            }
-
-            // this.addEvent(marker, stationObj);
           }
         }
       });
     },
-    
-    
-   
+    changeDeviceInfoDialog(value) {
+      this.deviceInfoDialog = value;
+    },
+    getPosInfo() {
+      let currentPosId = this.carouselList[this.activeIndex].id;
+      this.$request({
+        url: '/empty',
+        method: 'post',
+        data: {}
+      }).then(res => {
+        let data = res.data;
+        if (currentPosId == 61) {
+          this.currentPosition.title = "迈晓区间";
+          this.currentPosition.note = "待补充";
+        } else {
+          this.currentPosition.title = "马群站";
+          this.currentPosition.note = "马群站是南京地铁2号线和南京地铁S6号线的换乘车站，车站位于南京市栖霞区中山门大街与马群新街交叉路口左侧。南京地铁2号线为高架三层侧式车站，南京地铁S6号线为地下二层岛式车站，可与南京麒麟有轨电车站外换乘。";
+        }
+      });
+    },
   }
 }
 
 </script>
 
 <style scoped>
-.box-card2 {
-  margin: 1px;
-  height: calc((100vh - 140px) * 2 / 3 + 13px);
+.el-carousel__item h3 {
+  color: #475669;
+  font-size: 14px;
+  opacity: 0.75;
+  line-height: 200px;
+  margin: 0;
 }
 
-.box-card2-div {
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n+1) {
+  background-color: #d3dce6;
+}
+
+.map {
   margin: 1px;
   height: calc(100vh - 200px);
 }
 
 
 .up-map-div-top {
-  top:10px;
+  top: 10px;
   left: 60px;
   position: absolute;
   z-index: 2000;
   background-color: transparent;
   opacity: 1;
   display: block;
+}
+
+.up-map-div-left {
+  top: 60px;
+  left: 60px;
+  height: 200px;
+  width: 15%;
+  position: absolute;
+  z-index: 2000;
+  background-color: white;
+  border-block-color: white;
+  opacity: 0.8;
+  display: block;
+}
+
+.up-map-div-bottom {
+  bottom: 5px;
+  left: 15px;
+  height: 150px;
+  width: 73%;
+  position: absolute;
+  z-index: 2000;
+  background-color: white;
+  border-block-color: white;
+  opacity: 0.9;
+  display: block;
+
+}
+
+.img-mapon {
+  height: 146px;
+  margin-left: 5px;
+  margin-top: 2px;
 }
 </style>

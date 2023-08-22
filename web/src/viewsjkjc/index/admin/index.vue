@@ -5,8 +5,10 @@
         <tunnel-map></tunnel-map>
       </el-col>
       <el-col :span="6" :offset="0">
-        <div>bar</div>
-        <div>message</div>
+        <bar-chart></bar-chart>
+        <hr>
+        <report-table></report-table>
+        <div></div>
       </el-col>
     </el-row>
     
@@ -23,7 +25,6 @@ import LineChartTwo from './components/LineChartTwo'
 import BarChart from './components/BarChart'
 import TunnelMap from './components/TunnelMap'
 import ThreeDimensionMap from './components/ThreeDimensionMap'
-import AlarmTable from './components/AlarmTable'
 import ReportTable from './components/ReportTable'
 import PanelNav from './components/PanelNav'
 
@@ -37,7 +38,6 @@ export default {
     BarChart,
     TunnelMap,
     ThreeDimensionMap,
-    AlarmTable,
     ReportTable,
     PanelNav
   },
@@ -89,6 +89,7 @@ export default {
   padding: 5px 10px;
   background-color: rgb(240, 242, 245);
   position: relative;
+  height: calc(100vh - 200px);
 }
 
 
