@@ -3,7 +3,8 @@
     <div style="padding-bottom: 10px;">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>监测数据</el-breadcrumb-item>
+        <el-breadcrumb-item>告警中心</el-breadcrumb-item>
+        <el-breadcrumb-item>设备告警</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <el-row type="flex" align="middle" style="height: 80px;background-color: #CECECE;">
@@ -36,16 +37,17 @@
       <el-table-column prop="line" label="线路" align="center"></el-table-column>
       <el-table-column prop="direction" label="上下行" align="center"></el-table-column>
       <el-table-column prop="bridge_serial_no" label="桩号、桥墩号" align="center"></el-table-column>
-      <el-table-column prop="content" label="内容" width="280" align="center"></el-table-column>
+      <el-table-column prop="content" label="告警内容" width="280" align="center"></el-table-column>
       <el-table-column prop="record_datetime" label="时间" align="center"></el-table-column>
-      <!-- <el-table-column prop="_oper" label="操作" width="280" align="center">
+      <el-table-column prop="_oper" label="操作" width="280" align="center">
         <template slot-scope='scope'>
-          <el-button size="mini">详细信息</el-button>
+          <el-button size="mini" plain type="primary">添加处置记录</el-button>
+          <el-button size="mini" plain type="success">查看处置记录</el-button>
         </template>
-      </el-table-column> -->
+      </el-table-column>
     </el-table>
     <el-pagination :current-page="page.pageNum" :page-sizes="[10, 20, 50]" :page-size="page.pageSize"
-      layout="total, sizes, prev, pager, next, jumper" :total="page.total"></el-pagination>
+      layout="total, sizes, prev, pager, next, jumper" :total="page.total" style="float: left;"></el-pagination>
 
   </div>
 </template>
@@ -53,7 +55,7 @@
 <script>
 /* eslint-disable */
 export default {
-  name: 'monitor',
+  name: 'deviceWarning',
   components: {
   },
   data() {
@@ -68,10 +70,10 @@ export default {
         {"c":"2","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
         {"c":"3","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
         {"c":"4","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"5","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"6","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"7","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"8","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
+        {"c":"5","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"设备离线","record_datetime":"2023-02-23 12:23:00"},
+        {"c":"6","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"设备离线","record_datetime":"2023-02-23 12:23:00"},
+        {"c":"7","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"设备离线","record_datetime":"2023-02-23 12:23:00"},
+        {"c":"8","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"设备离线","record_datetime":"2023-02-23 12:23:00"},
         {"c":"9","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
         {"c":"10","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
         {"c":"11","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},

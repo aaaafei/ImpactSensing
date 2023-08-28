@@ -139,32 +139,24 @@ const routers = [ // 定义vue-router的路径和对应的组件，注意是comp
             },
             {
                 path: '/monitor',
-                component: () => import('./viewsjkjc/monitor/index')
+                component: () => import('./viewsjkjc/monitor/index.vue')
             },
             {
-                path: '/monitor2',
-                component: () => import('./viewsjkjc/monitor/index2')
+                path: '/deviceWarning',
+                component: ()=>import('./viewsjkjc/warning/deviceWarning.vue')
             },
             {
-                path: '/deviceData',
-                component: () => import('./viewsjkjc/device-data/device-data-table')
+                path: '/infoWarning',
+                component: ()=>import('./viewsjkjc/warning/infoWarning.vue')
             },
             {
-                path: '/fxbg', 
-                component: () => import('./viewsjkjc/analysis_evaluation/list.vue')
+                path: '/deviceList',
+                component: () => import('./viewsjkjc/device/deviceList')
             },
             {
-                path: '/zhgy', 
-                component: () => import('./viewsjkjc/zhgy/list.vue')
+                path: '/patrolList',
+                component: () => import('./viewsjkjc/device/patrolList')
             },
-            {
-                path: '/warning',
-                component: ()=>import('./viewsjkjc/warning/warning')
-            },
-            {
-                path: '/calculateMode',
-                component: () => import('./viewsjkjc/calculate_model/index')
-            }
         ]
     },
     {

@@ -1,3 +1,4 @@
+/* eslint-disable */
 //方法一
 export function formatDate(val) {
     var date = new Date(Number(val)); //时间戳为10位需*1000，时间戳为13位的话不需乘1000

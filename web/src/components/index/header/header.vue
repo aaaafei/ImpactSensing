@@ -19,7 +19,7 @@
     </el-col>
     <el-col :span="20">
       <el-menu
-        :default-active="this.$route.path"
+        :default-active="1"
         router
         class="el-menu-demo"
         mode="horizontal"
@@ -27,17 +27,17 @@
         background-color="#005BB4"
         text-color="#fff"
         active-text-color="#ffd04b">
-        <el-menu-item index="/home" route="home">首页</el-menu-item>
-        <el-menu-item index="2">监测数据</el-menu-item>
+        <el-menu-item index="1" route="home">首页</el-menu-item>
+        <el-menu-item index="2" route="monitor">监测数据</el-menu-item>
         <el-submenu index="3">
           <template slot="title">告警中心</template>
-          <el-menu-item index="3-1">设备告警</el-menu-item>
-          <el-menu-item index="3-2">已发送通知</el-menu-item>
+          <el-menu-item index="3-1" route="deviceWarning">设备告警</el-menu-item>
+          <el-menu-item index="3-2" route="infoWarning">已发送通知</el-menu-item>
         </el-submenu>
         <el-submenu index="4">
           <template slot="title">设备信息</template>
-          <el-menu-item index="4-1">终端装置</el-menu-item>
-          <el-menu-item index="4-2">检查及更换记录</el-menu-item>
+          <el-menu-item index="4-1" route="deviceList">终端装置</el-menu-item>
+          <el-menu-item index="4-2" route="patrolList">检查及更换记录</el-menu-item>
         </el-submenu>
         <el-menu-item index="5">统计分析</el-menu-item>
         <el-menu-item index="6">智慧工务</el-menu-item>

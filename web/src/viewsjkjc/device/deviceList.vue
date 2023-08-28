@@ -3,18 +3,14 @@
     <div style="padding-bottom: 10px;">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>监测数据</el-breadcrumb-item>
+        <el-breadcrumb-item>设备信息</el-breadcrumb-item>
+        <el-breadcrumb-item>终端装置</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <el-row type="flex" align="middle" style="height: 80px;background-color: #CECECE;">
       <el-col :span="17">
         <div style="padding-left: 30px;;">
-          <span style="color: #568AF2;">日期</span>
-          <el-date-picker v-model="value1" type="date" placeholder="选择日期">
-          </el-date-picker>
-          <span style="color: #568AF2;">至</span>
-          <el-date-picker v-model="value1" type="date" placeholder="选择日期">
-          </el-date-picker>
+          
         </div>
       </el-col>
       <el-col :span="5">
@@ -36,16 +32,33 @@
       <el-table-column prop="line" label="线路" align="center"></el-table-column>
       <el-table-column prop="direction" label="上下行" align="center"></el-table-column>
       <el-table-column prop="bridge_serial_no" label="桩号、桥墩号" align="center"></el-table-column>
-      <el-table-column prop="content" label="内容" width="280" align="center"></el-table-column>
-      <el-table-column prop="record_datetime" label="时间" align="center"></el-table-column>
-      <!-- <el-table-column prop="_oper" label="操作" width="280" align="center">
+      <el-table-column prop="content" label="现场安装图片" width="280" align="center">
         <template slot-scope='scope'>
-          <el-button size="mini">详细信息</el-button>
+          <img src="../../../static/images/demo/xc001.png" alt="" style="height: 40px;">
+          <img src="../../../static/images/demo/xc002.png" alt="" style="height: 40px;">
+          <img src="../../../static/images/demo/xc003.png" alt="" style="height: 40px;">
         </template>
-      </el-table-column> -->
+      </el-table-column>
+      <el-table-column prop="_tx" label="通信部件" width="120" align="center">
+        <template slot-scope='scope'>
+          <el-button type="success" size="mini" circle="true" icon="el-icon-check"></el-button>
+          <span style="color:#1684FC">运行正常</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="_sz" label="受撞部件" width="120" align="center">
+        <template slot-scope='scope'>
+          <el-button type="primary" size="mini" circle="true" icon="el-icon-check"></el-button>
+          <span style="color:#1684FC">无撞击</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="_oper" label="操作" width="120" align="center">
+        <template slot-scope='scope'>
+          <el-button size="mini" plain type="primary">设备详情</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination :current-page="page.pageNum" :page-sizes="[10, 20, 50]" :page-size="page.pageSize"
-      layout="total, sizes, prev, pager, next, jumper" :total="page.total"></el-pagination>
+      layout="total, sizes, prev, pager, next, jumper" :total="page.total" style="float: left;"></el-pagination>
 
   </div>
 </template>
@@ -53,7 +66,7 @@
 <script>
 /* eslint-disable */
 export default {
-  name: 'monitor',
+  name: 'deviceWarning',
   components: {
   },
   data() {
@@ -68,10 +81,10 @@ export default {
         {"c":"2","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
         {"c":"3","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
         {"c":"4","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"5","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"6","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"7","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"8","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
+        {"c":"5","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"设备离线","record_datetime":"2023-02-23 12:23:00"},
+        {"c":"6","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"设备离线","record_datetime":"2023-02-23 12:23:00"},
+        {"c":"7","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"设备离线","record_datetime":"2023-02-23 12:23:00"},
+        {"c":"8","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"设备离线","record_datetime":"2023-02-23 12:23:00"},
         {"c":"9","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
         {"c":"10","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
         {"c":"11","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
@@ -91,4 +104,24 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.qr-code-icon-default {
+  /deep/ .el-icon-my-crash {
+    background: url('../../../static/images/project/crash.png') no-repeat;
+  }
+}
+.qr-code-icon-disabled {
+  /deep/ .el-icon-my-crash {
+    background: url('../../../static/images/project/crash.png') no-repeat;
+  }
+}
+/deep/.el-icon-my-crash {
+  font-size: 12px;
+  background-size: cover;
+}
+/deep/ .el-icon-my-crash:before {
+  content: '替';
+  font-size: 12px;
+  visibility: hidden;
+}
+</style>

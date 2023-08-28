@@ -23,12 +23,12 @@
             <li v-for="(message, index) in messages" :key="index" :class="{ 'new-message': index === 0 }">
               <el-row :gutter="5">
                 <el-col :span="4" :offset="0">
-                  <div>
+                  <div style="cursor: pointer;" @click="openDeviceInfoDialog">
                     <img src="../../../../../static/images/project/device01.png" alt="">
                   </div>
                 </el-col>
                 <el-col :span="16" :offset="0">
-                  <div style="font-size: 14px;font-weight: bold;cursor: pointer;" @click="deviceInfoDialog = true">{{ message.name }}</div>
+                  <div style="font-size: 14px;font-weight: bold;cursor: pointer;" @click="openDeviceInfoDialog">{{ message.name }}</div>
                   <div style="font-size: 14px;" v-if="message.status == '1' && message.battery>=50">{{'设备运行状态' + (message.status=="1"?"正常":"异常") + "，电池余量" + message.battery + "%"}}</div>
                   <div style="font-size: 14px;color: red;" v-else>{{'设备运行状态' + (message.status=="1"?"正常":"异常") + "，电池余量" + message.battery + "%"}}</div>
                 </el-col>
@@ -98,6 +98,9 @@ export default {
     },
     changeDeviceInfoDialog(value) {
       this.deviceInfoDialog = value;
+    },
+    openDeviceInfoDialog () {
+      this.deviceInfoDialog = true;
     },
   },
   mounted: function () {
