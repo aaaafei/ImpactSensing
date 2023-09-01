@@ -4,7 +4,7 @@
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>设备信息</el-breadcrumb-item>
-        <el-breadcrumb-item>检修和更换记录</el-breadcrumb-item>
+        <el-breadcrumb-item>检修记录</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <el-row type="flex" align="middle" style="height: 80px;background-color: #CECECE;">
@@ -14,7 +14,7 @@
         </div>
       </el-col>
       <el-col :span="5">
-        <el-input placeholder="设备编码、设备名称、线路、桩号、桥墩号" prefix-icon="el-icon-search" v-model="input2">
+        <el-input placeholder="设备编码、设备名称、线路、桩号、桥墩号" prefix-icon="el-icon-search" v-model="search">
         </el-input>
       </el-col>
       <el-col :span="2" style="text-align: center;">
@@ -34,21 +34,19 @@
       <el-table-column prop="bridge_serial_no" label="桩号、桥墩号" align="center"></el-table-column>
       <el-table-column prop="content" label="现场安装图片" width="280" align="center">
         <template slot-scope='scope'>
-          <img src="../../../static/images/demo/xc001.png" alt="" style="height: 40px;">
-          <img src="../../../static/images/demo/xc002.png" alt="" style="height: 40px;">
-          <img src="../../../static/images/demo/xc003.png" alt="" style="height: 40px;">
+          <img :src="item" alt="" v-for="(item,index) in images" :key="index" style="height: 40px;margin-left: 2px;" @click="previewImage(item)">
         </template>
       </el-table-column>
       <el-table-column prop="_tx" label="检修记录" width="120" align="center">
         <template slot-scope='scope'>
-          <span style="color:#1684FC">15次</span>
+          <span style="color:#1684FC;cursor: pointer;" @click="openDisposeRecordDialog">10次</span>
         </template>
       </el-table-column>
-      <el-table-column prop="_sz" label="更换记录" width="120" align="center">
+      <!-- <el-table-column prop="_sz" label="更换记录" width="120" align="center">
         <template slot-scope='scope'>
           <span style="color:#1684FC">无</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <!-- <el-table-column prop="_oper" label="操作" width="120" align="center">
         <template slot-scope='scope'>
           <el-button size="mini" plain type="primary">设备详情</el-button>
@@ -58,14 +56,24 @@
     <el-pagination :current-page="page.pageNum" :page-sizes="[10, 20, 50]" :page-size="page.pageSize"
       layout="total, sizes, prev, pager, next, jumper" :total="page.total" style="float: left;"></el-pagination>
 
+    <dispose-record-table :disposeRecordDialog = "disposeRecordDialog" @changeDisposeRecordDialog="changeDisposeRecordDialog"></dispose-record-table>
+
+    <el-dialog title="" :visible.sync="imgDialogVisible" width="50%">
+      <div style="height:600px;text-align: center;">
+        <img :src="previewImg" alt="" style="height: 100%;">
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 /* eslint-disable */
+import DisposeRecordTable from './components/DisposeRecordTable';
 export default {
   name: 'deviceWarning',
   components: {
+    DisposeRecordTable
   },
   data() {
     return {
@@ -74,6 +82,7 @@ export default {
         pageSize: 50,
         total: 15
       },
+      search:"",
       deviceList: [
         {"c":"1","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
         {"c":"2","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
@@ -91,10 +100,23 @@ export default {
         {"c":"14","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
         {"c":"15","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
       ],
+      disposeRecordDialog: false,
+      imgDialogVisible: false,
+      images: ['../../../static/images/demo/xc001.png','../../../static/images/demo/xc002.png','../../../static/images/demo/xc003.png'],
+      previewImg: '',
     };
   },
   methods: {
-
+    changeDisposeRecordDialog(value) {
+      this.disposeRecordDialog = value;
+    },
+    openDisposeRecordDialog() {
+      this.disposeRecordDialog = true;
+    },
+    previewImage(value) {
+      this.previewImg = value;
+      this.imgDialogVisible = true;
+    },
   },
   mounted: function () {
 

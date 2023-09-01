@@ -14,7 +14,7 @@
         </div>
       </el-col>
       <el-col :span="5">
-        <el-input placeholder="设备编码、设备名称、线路、桩号、桥墩号" prefix-icon="el-icon-search" v-model="input2">
+        <el-input placeholder="设备编码、设备名称、线路、桩号、桥墩号" prefix-icon="el-icon-search" v-model="search">
         </el-input>
       </el-col>
       <el-col :span="2" style="text-align: center;">
@@ -34,40 +34,48 @@
       <el-table-column prop="bridge_serial_no" label="桩号、桥墩号" align="center"></el-table-column>
       <el-table-column prop="content" label="现场安装图片" width="280" align="center">
         <template slot-scope='scope'>
-          <img src="../../../static/images/demo/xc001.png" alt="" style="height: 40px;">
-          <img src="../../../static/images/demo/xc002.png" alt="" style="height: 40px;">
-          <img src="../../../static/images/demo/xc003.png" alt="" style="height: 40px;">
+          <img :src="item" alt="" v-for="(item,index) in images" :key="index" style="height: 40px;margin-left: 2px;" @click="previewImage(item)">
         </template>
       </el-table-column>
       <el-table-column prop="_tx" label="通信部件" width="120" align="center">
         <template slot-scope='scope'>
-          <el-button type="success" size="mini" circle="true" icon="el-icon-check"></el-button>
+          <el-button type="success" size="mini" :circle="true" icon="el-icon-check"></el-button>
           <span style="color:#1684FC">运行正常</span>
         </template>
       </el-table-column>
       <el-table-column prop="_sz" label="受撞部件" width="120" align="center">
         <template slot-scope='scope'>
-          <el-button type="primary" size="mini" circle="true" icon="el-icon-check"></el-button>
+          <el-button type="primary" size="mini" :circle="true" icon="el-icon-check"></el-button>
           <span style="color:#1684FC">无撞击</span>
         </template>
       </el-table-column>
       <el-table-column prop="_oper" label="操作" width="120" align="center">
         <template slot-scope='scope'>
-          <el-button size="mini" plain type="primary">设备详情</el-button>
+          <el-button size="mini" plain type="primary" @click="openDeviceInfoDialog">设备详情</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination :current-page="page.pageNum" :page-sizes="[10, 20, 50]" :page-size="page.pageSize"
       layout="total, sizes, prev, pager, next, jumper" :total="page.total" style="float: left;"></el-pagination>
 
+    <device-info :deviceInfoDialog = "deviceInfoDialog" @changeDeviceInfoDialog="changeDeviceInfoDialog"></device-info>
+
+    <el-dialog title="" :visible.sync="imgDialogVisible" width="50%">
+      <div style="height:600px;text-align: center;">
+        <img :src="previewImg" alt="" style="height: 100%;">
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 /* eslint-disable */
+import DeviceInfo from '../index/admin/components/DeviceInfo.vue'
 export default {
   name: 'deviceWarning',
   components: {
+    DeviceInfo,
   },
   data() {
     return {
@@ -93,10 +101,24 @@ export default {
         {"c":"14","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
         {"c":"15","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
       ],
+      search: '',
+      deviceInfoDialog: false,
+      imgDialogVisible: false,
+      images: ['../../../static/images/demo/xc001.png','../../../static/images/demo/xc002.png','../../../static/images/demo/xc003.png'],
+      previewImg: '',
     };
   },
   methods: {
-
+    changeDeviceInfoDialog(value) {
+      this.deviceInfoDialog = value;
+    },
+    openDeviceInfoDialog () {
+      this.deviceInfoDialog = true;
+    },
+    previewImage(value) {
+      this.previewImg = value;
+      this.imgDialogVisible = true;
+    },
   },
   mounted: function () {
 

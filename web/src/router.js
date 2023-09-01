@@ -151,11 +151,15 @@ const routers = [ // 定义vue-router的路径和对应的组件，注意是comp
             },
             {
                 path: '/deviceList',
-                component: () => import('./viewsjkjc/device/deviceList')
+                component: () => import('./viewsjkjc/device/deviceList.vue')
             },
             {
                 path: '/patrolList',
-                component: () => import('./viewsjkjc/device/patrolList')
+                component: () => import('./viewsjkjc/device/patrolList.vue')
+            },
+            {
+                path: '/gongwu',
+                component: () => import('./viewsjkjc/gongwu/gongwu.vue')
             },
         ]
     },

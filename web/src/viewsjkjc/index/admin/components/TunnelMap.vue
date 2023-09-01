@@ -18,28 +18,23 @@
         <div style="display: inline-block;float: left;padding-left: 5px;padding-right: 2px;">
           <span style="color: #1684FC;"><br>现<br>场<br>图<br>片</span>
         </div>
-        <!-- <div>
-          <el-carousel :interval="4000" type="card" height="150px">
-            <el-carousel-item v-for="item in 6" :key="item">
-              <h3 class="medium">{{ item }}</h3>
-            </el-carousel-item>
-          </el-carousel>
-        </div> -->
-        <div style="display: inline-block;overflow-x: scroll;overflow-x: hidden;">
-          <img src="../../../../../static/images/demo/xc001.png" alt="" class="img-mapon">
-          <img src="../../../../../static/images/demo/xc002.png" alt="" class="img-mapon">
-          <img src="../../../../../static/images/demo/xc003.png" alt="" class="img-mapon">
-          <img src="../../../../../static/images/demo/xc004.png" alt="" class="img-mapon">
-          <img src="../../../../../static/images/demo/xc001.png" alt="" class="img-mapon">
-          <img src="../../../../../static/images/demo/xc002.png" alt="" class="img-mapon">
-        </div>
-
+        <ul class="img-container">
+          <li class="img-item" v-for="(item,index) in images" :key="index">
+            <img :src=item.filepath alt="" style="height: 145px;" @click="previewImage(item.filepath)">
+          </li>
+        </ul>
       </div>
 
       <baidu-map id="bmap" class="map" :scroll-wheel-zoom="true" :center="center" :zoom="zoom" @ready="handler">
       </baidu-map>
 
       <device-info :deviceInfoDialog="deviceInfoDialog" @changeDeviceInfoDialog="changeDeviceInfoDialog"></device-info>
+
+      <el-dialog title="" :visible.sync="imgDialogVisible" width="50%">
+        <div style="height:600px;text-align: center;">
+          <img :src="previewImg" alt="" style="height: 100%;">
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -75,7 +70,10 @@ export default {
       enableCarousel: true,
       activeIndex: 0,
       currentPosition: { title: "", note: "" },
-      currentPics: []
+      currentPics: [],
+      imgDialogVisible: false,
+      images: [],
+      previewImg: '',
     }
   },
   mounted() {
@@ -83,6 +81,7 @@ export default {
       this.carouselCompany();
       this.showDeviceOnMap();
       this.getPosInfo();
+      this.getImages();
     }, 1500);
 
   },
@@ -190,6 +189,22 @@ export default {
         }
       });
     },
+    getImages() {
+      this.images = [
+        {"filepath":"../../../../../static/images/demo/xc001.png"},
+        {"filepath":"../../../../../static/images/demo/xc002.png"},
+        {"filepath":"../../../../../static/images/demo/xc003.png"},
+        {"filepath":"../../../../../static/images/demo/xc004.png"},
+        {"filepath":"../../../../../static/images/demo/xc001.png"},
+        {"filepath":"../../../../../static/images/demo/xc003.png"},
+        {"filepath":"../../../../../static/images/demo/xc002.png"},
+        {"filepath":"../../../../../static/images/demo/xc004.png"},
+      ]
+    },
+    previewImage(value) {
+      this.previewImg = value;
+      this.imgDialogVisible = true;
+    },
   }
 }
 
@@ -255,9 +270,22 @@ export default {
 
 }
 
-.img-mapon {
-  height: 146px;
-  margin-left: 5px;
-  margin-top: 2px;
+.img-container {
+  width: 94%;
+  height: 145px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  padding-left: 5px;
+  padding-right: 15px;
+  margin-top: 5px;
+  margin-bottom: 1px;
+}
+
+.img-item {
+  display: inline-block;
+  cursor: pointer;
+  padding: 2px;
 }
 </style>

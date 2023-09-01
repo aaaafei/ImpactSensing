@@ -11,15 +11,15 @@
       <el-col :span="17">
         <div style="padding-left: 30px;;">
           <span style="color: #568AF2;">日期</span>
-          <el-date-picker v-model="value1" type="date" placeholder="选择日期">
+          <el-date-picker v-model="date1" type="date" placeholder="选择日期">
           </el-date-picker>
           <span style="color: #568AF2;">至</span>
-          <el-date-picker v-model="value1" type="date" placeholder="选择日期">
+          <el-date-picker v-model="date2" type="date" placeholder="选择日期">
           </el-date-picker>
         </div>
       </el-col>
       <el-col :span="5">
-        <el-input placeholder="设备编码、设备名称、线路、桩号、桥墩号" prefix-icon="el-icon-search" v-model="input2">
+        <el-input placeholder="设备编码、设备名称、线路、桩号、桥墩号" prefix-icon="el-icon-search" v-model="search">
         </el-input>
       </el-col>
       <el-col :span="2" style="text-align: center;">
@@ -29,9 +29,9 @@
     </el-row>
     <div style="height:10px;"></div>
 
-    <el-table :data="deviceList" :height="600" border stripe 
+    <el-table :data="deviceList" :height="tableHeight" border stripe 
       :header-cell-style="{ background: '#A1B6D8', color: '#fff' }">
-      <el-table-column prop="c" label="序号" width="50" align="center"></el-table-column>
+      <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
       <el-table-column prop="device_code" label="设备编码" align="center"></el-table-column>
       <el-table-column prop="device_name" label="设备名称" align="center"></el-table-column>
       <el-table-column prop="line" label="线路" align="center"></el-table-column>
@@ -41,25 +41,29 @@
       <el-table-column prop="record_datetime" label="时间" align="center"></el-table-column>
       <el-table-column prop="_oper" label="操作" width="280" align="center">
         <template slot-scope='scope'>
-          <el-button size="mini" plain type="primary">添加处置记录</el-button>
-          <el-button size="mini" plain type="success">查看处置记录</el-button>
+          <el-button size="mini" plain type="success" @click="openDisposeRecordDialog">查看处置记录</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination :current-page="page.pageNum" :page-sizes="[10, 20, 50]" :page-size="page.pageSize"
       layout="total, sizes, prev, pager, next, jumper" :total="page.total" style="float: left;"></el-pagination>
 
+    <dispose-record-form :disposeRecordDialog = "disposeRecordDialog" @changeDisposeRecordDialog="changeDisposeRecordDialog"></dispose-record-form>
+
   </div>
 </template>
 
 <script>
 /* eslint-disable */
+import DisposeRecordForm from './components/DisposeRecordForm';
 export default {
   name: 'deviceWarning',
   components: {
+    DisposeRecordForm,
   },
   data() {
     return {
+      tableHeight:document.body.clientHeight-330,
       page: {
         pageNum: 1,
         pageSize: 50,
@@ -82,10 +86,19 @@ export default {
         {"c":"14","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
         {"c":"15","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
       ],
+      date1: null,
+      date2: null,
+      search: "",
+      disposeRecordDialog: false,
     };
   },
   methods: {
-
+    changeDisposeRecordDialog(value) {
+      this.disposeRecordDialog = value;
+    },
+    openDisposeRecordDialog() {
+      this.disposeRecordDialog = true;
+    },
   },
   mounted: function () {
 

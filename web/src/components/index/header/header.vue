@@ -19,7 +19,7 @@
     </el-col>
     <el-col :span="20">
       <el-menu
-        :default-active="1"
+        :default-active="activeMenu"
         router
         class="el-menu-demo"
         mode="horizontal"
@@ -27,21 +27,21 @@
         background-color="#005BB4"
         text-color="#fff"
         active-text-color="#ffd04b">
-        <el-menu-item index="1" route="home">首页</el-menu-item>
-        <el-menu-item index="2" route="monitor">监测数据</el-menu-item>
+        <el-menu-item index="home" route="home">首页</el-menu-item>
+        <el-menu-item index="monitor" route="monitor">监测数据</el-menu-item>
         <el-submenu index="3">
           <template slot="title">告警中心</template>
-          <el-menu-item index="3-1" route="deviceWarning">设备告警</el-menu-item>
-          <el-menu-item index="3-2" route="infoWarning">已发送通知</el-menu-item>
+          <el-menu-item index="deviceWarning" route="deviceWarning">设备告警</el-menu-item>
+          <el-menu-item index="infoWarning" route="infoWarning">已发送通知</el-menu-item>
         </el-submenu>
         <el-submenu index="4">
           <template slot="title">设备信息</template>
           <el-menu-item index="4-1" route="deviceList">终端装置</el-menu-item>
-          <el-menu-item index="4-2" route="patrolList">检查及更换记录</el-menu-item>
+          <el-menu-item index="4-2" route="patrolList">检修记录</el-menu-item>
         </el-submenu>
-        <el-menu-item index="5">统计分析</el-menu-item>
-        <el-menu-item index="6">智慧工务</el-menu-item>
-        <el-menu-item index="/sysmanage" route="sysmanage">系统设置</el-menu-item>
+        <!-- <el-menu-item index="5">统计分析</el-menu-item> -->
+        <el-menu-item index="gongwu" route="gongwu">智慧工务</el-menu-item>
+        <el-menu-item index="sysmanage" route="sysmanage">系统设置</el-menu-item>
       </el-menu>
     </el-col>
   </el-row>
@@ -95,7 +95,7 @@
         }
       };
       return {
-        activeIndex: this.$route.path.substring(1),
+        activeMenu: this.$route.path.substring(1),
         hasSide: false,
         userMenus: [],
         activeName: 'polling-result',
@@ -204,12 +204,9 @@
         this.cofPass = '';
         this.$refs['passForm'].resetFields();
       },
-      // 面包屑切换
-      handleClick (tab, event) {
-        // $('div#mainCrumb').children(':last').children('span').text(tab.label);
-      },
+      
       handleSelect(key, keyPath) {
-        console.log(key,keyPath);
+        // console.log(key,keyPath);
         this.activeIndex = key;
       },
       getMenus: function () {
@@ -237,11 +234,6 @@
     components: {
       NavMenu: NavMenu
     },
-    watch: {
-      $route:function (to, from) { 
-        this.activeIndex = to.path.substring(1); // 点击回退时让菜单选项随之改变 
-      }
-    }
   };
 </script>
 

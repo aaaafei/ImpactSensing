@@ -10,7 +10,7 @@
               <el-progress :percentage="50"></el-progress>
             </el-col>
             <el-col :span="6" :offset="0" style="text-align: center;">
-              <el-button type="success" circle="true" icon="el-icon-check"></el-button>
+              <el-button type="success" :circle=true icon="el-icon-check"></el-button>
               <div style="color:#1684FC">运行正常</div>
             </el-col>
           </el-row>
@@ -18,7 +18,7 @@
 
           </div>
           <el-card class="box-card">
-            <div v-for="o in deviceInfo" :key="o" class="text item">
+            <div v-for="(o,index) in deviceInfo" :key="index" class="text item">
               {{ o.label + ': ' + o.value }}
             </div>
           </el-card>
@@ -26,7 +26,7 @@
         <el-col :span="12" :offset="0">
           <div>
             <div style="display:inline-block; font-size: 28px;color:#7F83F7;">最新消息</div>
-            <div style="display:inline-block; float: right;padding-top: 15px;;"><el-link type="primary">查看更多>></el-link>
+            <div style="display:inline-block; float: right;padding-top: 15px;;"><span type="primary">查看更多>></span>
             </div>
           </div>
 
