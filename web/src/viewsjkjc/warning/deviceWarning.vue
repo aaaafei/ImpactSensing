@@ -4,7 +4,7 @@
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>告警中心</el-breadcrumb-item>
-        <el-breadcrumb-item>设备告警</el-breadcrumb-item>
+        <el-breadcrumb-item>受撞告警</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <el-row type="flex" align="middle" style="height: 80px;background-color: #CECECE;">
@@ -23,7 +23,7 @@
         </el-input>
       </el-col>
       <el-col :span="2" style="text-align: center;">
-        <el-button type="primary">查询</el-button>
+        <el-button type="primary" @click="searchData">查询</el-button>
       </el-col>
 
     </el-row>
@@ -32,15 +32,16 @@
     <el-table :data="deviceList" :height="tableHeight" border stripe 
       :header-cell-style="{ background: '#A1B6D8', color: '#fff' }">
       <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
-      <el-table-column prop="device_code" label="设备编码" align="center"></el-table-column>
-      <el-table-column prop="device_name" label="设备名称" align="center"></el-table-column>
+      <el-table-column prop="deviceCode" label="设备IMEI" align="center"></el-table-column>
+      <el-table-column prop="monitorType" label="监测项目" align="center"></el-table-column>
       <el-table-column prop="line" label="线路" align="center"></el-table-column>
-      <el-table-column prop="direction" label="上下行" align="center"></el-table-column>
-      <el-table-column prop="bridge_serial_no" label="桩号、桥墩号" align="center"></el-table-column>
-      <el-table-column prop="content" label="告警内容" width="280" align="center"></el-table-column>
-      <el-table-column prop="record_datetime" label="时间" align="center"></el-table-column>
+      <el-table-column prop="segment" label="区间" align="center"></el-table-column>
+      <el-table-column prop="stakeNumber" label="桥墩号" align="center"></el-table-column>
+      <el-table-column prop="remark" label="告警内容" width="280" align="center"></el-table-column>
+      <el-table-column prop="collectTime" label="时间" align="center"></el-table-column>
       <el-table-column prop="_oper" label="操作" width="280" align="center">
         <template slot-scope='scope'>
+          <el-button size="mini" plain type="primary" @click="openDisposeRecordDialog">添加处置</el-button>
           <el-button size="mini" plain type="success" @click="openDisposeRecordDialog">查看处置记录</el-button>
         </template>
       </el-table-column>
@@ -69,23 +70,7 @@ export default {
         pageSize: 50,
         total: 15
       },
-      deviceList: [
-        {"c":"1","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"2","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"3","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"4","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"5","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"设备离线","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"6","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"设备离线","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"7","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"设备离线","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"8","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"设备离线","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"9","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"10","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"11","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"12","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"13","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"14","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"15","device_code":"SBBM001001","device_name":"设备01","line":"2号线","direction":"上行","bridge_serial_no":"076","content":"状态：正常，剩余电量：80%","record_datetime":"2023-02-23 12:23:00"},
-      ],
+      deviceList: [],
       date1: null,
       date2: null,
       search: "",
@@ -99,9 +84,34 @@ export default {
     openDisposeRecordDialog() {
       this.disposeRecordDialog = true;
     },
+    handleSizeChange(val) {
+      this.page.pageSize = val;
+      this.searchData();
+    },
+    handleCurrentChange(val) {
+      this.page.pageNum = val;
+      this.searchData();
+    },
+    searchData() {
+      let param = {};
+      if (this.beginDate != undefined) param.beginDate = this.beginDate;
+      if (this.endDate != undefined) param.endDate = this.endDate;
+      if (this.search != undefined) param.search = this.search;
+      this.$request({
+        url: '/tmWarningRecords/getPageList/' + this.page.pageNum + '/' + this.page.pageSize,
+        method: 'post',
+        data: param
+      }).then(res => {
+        let data = res.data.result_data;
+        this.page.total = data.total;
+        this.page.pageNum = data.pageNum;
+        this.page.pageSize = data.pageSize;
+        this.deviceList = data.list;
+      });
+    }
   },
   mounted: function () {
-
+    this.searchData();
   }
 };
 </script>

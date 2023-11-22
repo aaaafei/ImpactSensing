@@ -148,9 +148,9 @@ export default {
             var stationObj = res.data.result_data.list[i];
             let iconUrl = "";
             if (stationObj.status == "1") {
-              iconUrl = '../../../../../static/images/demo/dun-green.png';
+              iconUrl = this.$STATIC_PREFIX+'images/demo/dun-green.png';
             } else {
-              iconUrl = '../../../../../static/images/demo/dun-red.png';
+              iconUrl = this.$STATIC_PREFIX+'images/demo/dun-red.png';
             }
             var myIcon = new BMap.Icon(iconUrl, new BMap.Size(50, 50));
             // var myIcon = new BMapGL.Icon(iconUrl, new BMapGL.Size(48, 48));
@@ -191,14 +191,14 @@ export default {
     },
     getImages() {
       this.images = [
-        {"filepath":"../../../../../static/images/demo/xc001.png"},
-        {"filepath":"../../../../../static/images/demo/xc002.png"},
-        {"filepath":"../../../../../static/images/demo/xc003.png"},
-        {"filepath":"../../../../../static/images/demo/xc004.png"},
-        {"filepath":"../../../../../static/images/demo/xc001.png"},
-        {"filepath":"../../../../../static/images/demo/xc003.png"},
-        {"filepath":"../../../../../static/images/demo/xc002.png"},
-        {"filepath":"../../../../../static/images/demo/xc004.png"},
+        {"filepath":this.$STATIC_PREFIX+"images/demo/xc001.png"},
+        {"filepath":this.$STATIC_PREFIX+"images/demo/xc002.png"},
+        {"filepath":this.$STATIC_PREFIX+"images/demo/xc003.png"},
+        {"filepath":this.$STATIC_PREFIX+"images/demo/xc004.png"},
+        {"filepath":this.$STATIC_PREFIX+"images/demo/xc001.png"},
+        {"filepath":this.$STATIC_PREFIX+"images/demo/xc003.png"},
+        {"filepath":this.$STATIC_PREFIX+"images/demo/xc002.png"},
+        {"filepath":this.$STATIC_PREFIX+"images/demo/xc004.png"},
       ]
     },
     previewImage(value) {

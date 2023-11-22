@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsti.tunnel.monitor.dao.master.ConstantDao" >
+    <resultMap id="BaseResultMap" type="com.jsti.tunnel.monitor.bean.Constant" >
+        <id property="id" column="ID"/>
+        <result property="code_value" column="code_value"/>
+        <result property="code_name" column="code_name"/>
+        <result property="code_flag" column="code_flag"/>
+        <result property="flag_name" column="flag_name"/>
+        <result property="valid" column="valid"/>
+        <result property="remark" column="remark"/>
+        <result property="sort_no" column="sort_no"/>
+    </resultMap>
+
+    <select id="getAll" resultMap="BaseResultMap"  >
+        SELECT *
+        FROM sys_code
+        WHERE valid!=0
+    </select>
+
+    <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+        SELECT *
+        FROM sys_code
+        WHERE valid!=0 and id = #{id}
+    </select>
+    
+    <select id="getByFlag" parameterType="String" resultMap="BaseResultMap" >
+        SELECT *
+        FROM sys_code
+        WHERE  valid!=0 
+           and code_flag=#{code_flag}
+    </select>
+    
+     <select id="getByName" parameterType="String" resultMap="BaseResultMap" >
+        SELECT *
+        FROM sys_code
+        WHERE valid!=0
+        	and flag_name like CONCAT('%',#{flag_name},'%')
+    </select>
+    
+    <select id="getByFlagAndValue" parameterType="com.jsti.tunnel.monitor.bean.Constant" resultMap="BaseResultMap" >
+        SELECT *
+        FROM sys_code
+        WHERE code_flag=#{code_flag}
+        	and code_value=#{code_value}
+        	and valid!=0
+    </select>
+
+    <insert id="insert" parameterType="com.jsti.tunnel.monitor.bean.Constant" >
+        INSERT INTO
+        sys_code
+        (code_value,code_name,code_flag,flag_name,valid,remark,sort_no)
+        VALUES
+        (#{code_value}, #{code_name},#{code_flag},#{flag_name},#{valid},#{remark},#{sort_no})
+    </insert>
+
+    <update id="update" parameterType="com.jsti.tunnel.monitor.bean.Constant" >
+        UPDATE
+        sys_code
+        SET
+        <if test="code_value != null">code_value = #{code_value},</if>
+        <if test="code_name != null">code_name = #{code_name},</if>
+        <if test="code_flag != null">code_flag = #{code_flag},</if>
+        <if test="flag_name != null">flag_name = #{flag_name},</if>
+        <if test="valid != null">valid = #{valid},</if>
+        <if test="remark != null">remark = #{remark},</if>
+        <if test="sort_no != null">sort_no = #{sort_no}</if>
+        WHERE
+        id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long" >
+        DELETE FROM
+        sys_code
+        WHERE
+        id =#{id}
+    </delete>
+
+</mapper>

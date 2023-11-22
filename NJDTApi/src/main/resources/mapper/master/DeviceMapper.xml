@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsti.tunnel.monitor.dao.master.DeviceDao">
+
+    <resultMap id="BaseResultMap" type="com.jsti.tunnel.monitor.bean.Device">
+        <id column="id" property="id" />
+        <result column="code" property="code"/>
+		<result column="name" property="name"/>
+		<result column="model" property="model"/>
+		<result column="type" property="type"/>
+		<result column="clientip" property="clientip"/>
+		<result column="clientport" property="clientport"/>
+		<result column="device_type" property="device_type"/>
+		<result column="line" property="line"/>
+		<result column="segment" property="segment"/>
+		<result column="stake_number" property="stake_number"/>
+		<result column="install_position" property="install_position"/>
+        <result column="serial_number" property="serial_number"/>
+        <result column="enabled" property="enabled"/>
+    </resultMap>
+
+    <insert id="add" parameterType="com.jsti.tunnel.monitor.bean.Device">
+
+    </insert>
+    
+    <delete id="delete" parameterType="java.util.List">
+
+    </delete>
+
+    <update id="update" parameterType="com.jsti.tunnel.monitor.bean.Device">
+        update tm_device
+        <trim prefix="set" suffixOverrides=",">
+            <if test="code != null">code = #{code},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="model != null">model = #{model},</if>
+			<if test="type != null">type = #{type},</if>
+			<if test="device_type != null">device_type = #{device_type},</if>
+			<if test="segment != null">segment = #{segment},</if>
+			<if test="stake_number != null">stake_number = #{stake_number},</if>
+			<if test="install_position != null">install_position = #{install_position},</if>
+			<if test="serial_number != null">serial_number = #{serial_number}</if>
+			<if test="enabled != null">enabled = #{enabled},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getPageData" parameterType="com.jsti.tunnel.monitor.pojo.TmDeviceParams" resultMap="BaseResultMap">
+        select * from tm_device a
+        <where>
+            <if test="code != null">and a.code like concat('%',#{code},'%')</if>
+            <if test="name != null">and a.name like concat('%',#{name},'%')</if>
+        </where>
+        order by a.id desc
+    </select>
+
+    <select id="getObjByID" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from tm_device a
+        WHERE a.id = #{id}
+    </select>
+
+</mapper>

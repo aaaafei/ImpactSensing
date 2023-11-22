@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsti.tunnel.monitor.dao.master.TmCalculateValueConfigDao">
+
+  <resultMap id="BaseResultMap" type="com.jsti.tunnel.monitor.bean.TmCalculateValueConfig">
+    <result column="leaf_id" jdbcType="INTEGER" property="leaf_id" />
+    <result column="device1_id" jdbcType="INTEGER" property="device1_id" />
+    <result column="device2_id" jdbcType="INTEGER" property="device2_id" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <association property="device" javaType="com.jsti.tunnel.monitor.bean.TmDevice">
+		<result column="id" property="id"></result>
+		<result column="code" property="code"></result>
+		<result column="name" property="name"></result>
+		<result column="model" property="model"></result>
+		<result column="dtype" property="type"></result>
+		<result column="device_type" property="deviceType"></result>
+		<result column="segment" property="segment"></result>
+		<result column="stake_number" property="stakeNumber"></result>
+		<result column="warning_data" property="warningData"></result>
+		<result column="signal_out" property="signalOut"></result>
+		<result column="measure_range" property="measureRange"></result>
+		<result column="electricity_supply" property="electricitySupply"></result>
+		<result column="install_position" property="installPosition"></result>
+		<result column="enabled" property="enabled"></result>
+		<result column="serial_number" property="serialNumber"></result>
+		<result column="collect_time" property="collectTime"></result>
+		<result column="subsecond" property="subsecond"></result>
+		<result column="realtime_physical_data" property="realtimePhysicalData"></result>
+		<result column="origin_value" property="originValue"></result> 
+		<result column="warning_level" property="warningLevel"></result>
+		<result column="status" property="status"></result>
+		<result column="line" property="line"></result>
+		<result column="initial_value" property="initialValue"></result>
+		<result column="pic1" property="pic1"></result>
+		<result column="pic2" property="pic2"></result>
+		<result column="adjoining_number" property="adjoiningNumber"></result>
+		<result column="adjoining_distance" property="adjoiningDistance"></result>
+		<result column="adjoining_diff" property="adjoiningDiff"></result>
+	</association>
+    
+  </resultMap>
+
+    <resultMap id="SubsideResultMap" type="com.jsti.tunnel.monitor.bean.TmSubside">
+        <id column="leaf_id" jdbcType="BIGINT" property="id" />
+        <result column="device1_code" jdbcType="VARCHAR" property="device1_code" />
+        <result column="device1_stake_number" jdbcType="VARCHAR" property="device1_stake_number" />
+        <result column="device2_code" jdbcType="VARCHAR" property="device1_code" />
+        <result column="device2_stake_number" jdbcType="VARCHAR" property="device2_stake_number" />
+        <result column="collect_time" jdbcType="VARCHAR" property="collect_time" />
+    </resultMap>
+
+  <select id="selectData" parameterType="com.jsti.tunnel.monitor.bean.TmCalculateModel" resultMap="BaseResultMap">
+    select
+    leaf_id,device1_id,device2_id,type
+    from tm_calculate_value_config
+    <where>
+    	<if test="device1_id!=null">and device1_id=#{device1_id}</if>
+    	<if test="device2_id!=null">and device2_id=#{device2_id}</if>
+    	<if test="type!=null">and type=#{type}</if> 
+    </where>
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	 select *,d.type as dtype from tm_calculate_value_config v,tm_device d where v.device1_id=d.id
+    	and v.leaf_id = #{leaf_id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectModelIdsByDevice1Id" parameterType="java.util.List" resultType="java.lang.Integer">
+	    select
+	    id
+	    from tm_calculate_value_config
+	    where device1_id in
+		<foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+		  #{id}
+		</foreach>
+  </select>
+
+    <select id="selectSubside" parameterType="java.util.Map" resultMap="SubsideResultMap">
+        SELECT c.*
+          ,d.`code` AS device1_code, d.stake_number AS device1_stake_number
+          ,d2.`code` AS device2_code,d2.stake_number AS device2_stake_number
+          ,d.line,d.segment,d.type AS monitor_item,d.collect_time
+        FROM `tm_calculate_value_config` c
+        LEFT JOIN tm_device d ON d.id = c.device1_id
+        LEFT JOIN tm_device d2 ON d2.id = c.device2_id
+        WHERE c.type = 2
+        <if test="segment!=null">and d.segment = #{segment}</if>
+        <if test="line!=null">and d.line = #{line}</if>
+        <if test="type!=null">and d.type = #{type}</if>
+    </select>
+  
+  <insert id="insert" parameterType="com.jsti.tunnel.monitor.bean.TmCalculateValueConfig">
+    insert into tm_calculate_value_config (leaf_id, device1_id, device2_id, 
+      `type`)
+    values (#{leaf_id,jdbcType=INTEGER}, #{device1_id,jdbcType=INTEGER}, #{device2_id,jdbcType=INTEGER}, 
+      #{type,jdbcType=TINYINT})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.jsti.tunnel.monitor.bean.TmCalculateValueConfig">
+    insert into tm_calculate_value_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="leaf_id != null">
+        leaf_id,
+      </if>
+      <if test="device1_id != null">
+        device1_id,
+      </if>
+      <if test="device2_id != null">
+        device2_id,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="leaf_id != null">
+        #{leaf_id,jdbcType=INTEGER},
+      </if>
+      <if test="device1_id != null">
+        #{device1_id,jdbcType=INTEGER},
+      </if>
+      <if test="device2_id != null">
+        #{device2_id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByLeafId" parameterType="java.lang.Integer">
+  	 delete from tm_calculate_value_config
+    where leaf_id = #{leaf_id,jdbcType=INTEGER}
+  </delete>
+</mapper>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsti.tunnel.monitor.dao.master.DepartmentDao" >
+    <resultMap id="BaseResultMap" type="com.jsti.tunnel.monitor.bean.Organ" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="organname" property="organname" jdbcType="VARCHAR" />
+        <result column="parentid" property="parentid" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="classtype" property="classtype" jdbcType="VARCHAR" />
+        <result column="organcode" property="organcode" jdbcType="VARCHAR" />
+        <result column="isshow" property="isshow" jdbcType="VARCHAR" />
+        <result column="deptype" property="deptype" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="creattime" property="creattime" jdbcType="DATE" />
+        <result column="sortno" property="sortno" jdbcType="INTEGER"/>
+    </resultMap>
+
+	 
+
+    <resultMap id="FeeStationTeamNum" type="com.jsti.tunnel.monitor.bean.Organ">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="organname" property="organname" jdbcType="VARCHAR" />
+        <result column="team_num" property="team_num" jdbcType="INTEGER"/>
+    </resultMap>
+
+  
+    
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT *  FROM sys_org
+    </select>
+
+    <!-- <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+        SELECT
+        id,organname,remark,parentid,classtype,organcode,isshow,deptype,status
+        FROM sys_org
+        WHERE id = #{id}
+    </select> -->
+ 
+    
+   
+    
+    <select id="getOrgan" parameterType="com.jsti.tunnel.monitor.bean.Organ" resultMap="BaseResultMap">
+        SELECT 
+        id,organname,remark,parentid,classtype,organcode,isshow,deptype,status,creattime,sortno
+         FROM sys_org
+         where 1=1
+         <if test="status != null">and status = #{status} </if>
+         <if test="status == null">and status != -1 </if>
+         <if test="organname != null">and organname = #{organname} </if>
+         <if test="remark != null">and remark = #{remark} </if>
+         <if test="parentid != null and parentid!=0">and parentid = #{parentid} </if>
+         <if test="classtype != null">and classtype = #{classtype} </if>
+         <if test="organcode != null">and organcode = #{organcode} </if>
+         <if test="isshow != null">and isshow = #{isshow} </if>
+         <if test="deptype != null">and deptype = #{deptype} </if>
+         <if test="id != null and id != 0">and id = #{id} </if>
+         order by sortno desc
+    </select>
+    
+
+    <insert id="insert" parameterType="com.jsti.tunnel.monitor.bean.Organ" >
+        INSERT INTO
+        sys_org
+        (organname,parentid,deptype,remark,sortno)
+        VALUES
+        (#{organname},#{parentid},#{deptype},#{remark},#{sortno})
+    </insert>
+
+    <update id="update" parameterType="com.jsti.tunnel.monitor.bean.Organ" >
+        UPDATE
+        sys_org
+        SET
+        <if test="organname != null">organname = #{organname},</if>
+        <if test="remark != null">remark = #{remark},</if>
+        <if test="parentid != null and parentid!=0">parentid = #{parentid},</if>
+        <if test="classtype != null">classtype = #{classtype},</if>
+        <if test="organcode != null">organcode = #{organcode},</if>
+        <if test="isshow != null">isshow = #{isshow},</if>
+        <if test="deptype != null">deptype = #{deptype},</if>
+        <if test="sortno != null">sortno = #{sortno},</if>
+        id = #{id}
+        WHERE
+        id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer" >
+        update sys_org
+         set status=-1
+        WHERE
+        id =#{id} or parentid=#{id}
+    </delete>
+
+ 
+
+  
+   
+    
+</mapper>

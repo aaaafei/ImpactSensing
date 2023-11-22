@@ -146,6 +146,10 @@ const routers = [ // 定义vue-router的路径和对应的组件，注意是comp
                 component: ()=>import('./viewsjkjc/warning/deviceWarning.vue')
             },
             {
+                path: '/otherWarning',
+                component: ()=>import('./viewsjkjc/warning/otherWarning.vue')
+            },
+            {
                 path: '/infoWarning',
                 component: ()=>import('./viewsjkjc/warning/infoWarning.vue')
             },

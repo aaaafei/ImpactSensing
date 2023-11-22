@@ -2,12 +2,11 @@
   <div>
     <el-dialog title="" :visible.sync="deviceInfoDialog" width="50%" :before-close="handleClose">
       <el-row :gutter="20" style="height: 550px;">
-        <el-col :span="12" :offset="0"
-          style="height: 550px;background:url('../../../../../static/images/project/dialog-background.png');">
+        <el-col :span="12" :offset="0" class="left">
           <el-row type="flex" :gutter="20" style="margin-top: 25px;">
             <el-col :span="18" :offset="0">
-              <div style="font-size: 32px;color:#1684FC;">马群新街001</div>
-              <el-progress :percentage="50"></el-progress>
+              <div style="font-size: 32px;color:#1684FC;">{{ deviceMap.segment  + '(' + deviceMap.stakeNumber + ')'}}</div>
+              <el-progress :percentage="deviceMap.electricPercentage"></el-progress>
             </el-col>
             <el-col :span="6" :offset="0" style="text-align: center;">
               <el-button type="success" :circle=true icon="el-icon-check"></el-button>
@@ -40,11 +39,11 @@
                     </div>
                   </el-col>
                   <el-col :span="16" :offset="0">
-                    <div style="font-size: 14px;font-weight: bold;">{{ message.name }}</div>
-                    <div style="font-size: 14px;" v-if="message.status == '1' && message.battery >= 50">{{ '设备运行状态' +
-                      (message.status == "1" ? "正常" : "异常") + "，电池余量" + message.battery + "%" }}</div>
-                    <div style="font-size: 14px;color: red;" v-else>{{ '设备运行状态' + (message.status == "1" ? "正常" : "异常") + "，电池余量"
-                      + message.battery + "%" }}</div>
+                    <div style="font-size: 14px;font-weight: bold;">{{ message.segment + '-' + message.stakeNumber }}</div>
+                    <div style="font-size: 14px;" v-if="message.catalogval == '0' && (message.voltage/500*100) >= 50">{{ '设备运行状态' +
+                      (message.catalogval == "0" ? "正常" : "异常") + "，电池余量" + (message.voltage/500*100).toFixed(0) + "%" }}</div>
+                    <div style="font-size: 14px;color: red;" v-else>{{ '设备运行状态' + (message.catalogval == "0" ? "正常" : "异常") + "，电池余量"
+                      + (message.voltage/500*100).toFixed(0) + "%" }}</div>
                   </el-col>
                   <el-col :span="4" :offset="0">
                     <div style="float: right;">{{ message.time }}</div>
@@ -64,11 +63,12 @@
 <script>
 /* eslint-disable */
 export default {
-  props: ["deviceInfoDialog"],
+  props: ["deviceInfoDialog","deviceCode"],
   data() {
     return {
       dialogVisible: this.deviceInfoDialog,
-      deviceInfo: {},
+      deviceInfo: [],
+      deviceMap: {},
       messages: [],
     };
   },
@@ -77,36 +77,61 @@ export default {
       this.$emit("changeDeviceInfoDialog", false);
     },
     getInfo() {
-      this.deviceInfo = [
-        { label: "设备编码", value: "020040010050001" },
-        { label: "设备名称", value: "马群新街002号" },
-        { label: "电池余量", value: "55%" },
-        { label: "电池容量", value: "2000mAh" },
-        { label: "线路", value: "2号线" },
-        { label: "方向", value: "下行路" },
-        { label: "桩号", value: "LK4+300" },
-        { label: "桥墩号", value: "QDH02004001" },
-        { label: "安装日期", value: "2023-04-01" },
-      ]
-    },
-    getDeviceMessage() {
       this.$request({
-        url: '/api/info/getDeviceInfo',
+        url: '/tmDevice/getDeviceDataByCode/' + this.deviceCode,
         method: 'post',
         data: {}
       }).then(res => {
-        this.messages = res.data.data.list;
+        let data = res.data.result_data;
+        data['electricVolume'] = 400;
+        data['electricPercentage'] = data.electricVolume/500*100;
+        this.deviceMap = data;
+        this.deviceInfo = [
+        { label: "设备IMEI", value: data.code },
+        { label: "监测项目", value: data.type },
+        { label: "电池余量", value: data.electricPercentage + '%' },
+        { label: "电池容量", value: "500mAh" },
+        { label: "线路", value: data.line },
+        { label: "区间", value: data.segment },
+        { label: "桩号/桥墩号", value: data.stakeNumber },
+        { label: "安装位置", value: data.installPosition },
+        { label: "安装日期", value: "2023-11-10" },
+      ]
+      });
+      
+    },
+    getDeviceMessage() {
+      let param = {};
+      param.clientimei = this.deviceCode;
+      this.$request({
+        url: '/tmOriginData/getPageListCatalogH0/1/15',
+        method: 'post',
+        data: param
+      }).then(res => {
+        let data = res.data.result_data;
+        this.messages = data.list;
       });
     }
   },
+  watch: {
+    deviceCode: {
+      handler(nv,ov) {
+        this.getInfo();
+        this.getDeviceMessage();
+      }
+    }
+  },
   mounted: function () {
-    this.getInfo();
-    this.getDeviceMessage();
+    
   }
 };
 </script>
 
 <style scoped>
+.left{
+  height: 550px;
+  background:url('../../../../../static/images/project/dialog-background.png');
+}
 .text {
   font-size: 18px;
   color: #1684FC;

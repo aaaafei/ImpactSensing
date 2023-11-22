@@ -16,21 +16,23 @@
       <el-card class="box-card" shadow="never" :body-style="{ padding: '5px' }">
         <div slot="header" class="clearfix">
           <span>设备信息</span>
-          <el-button style="float: right; padding: 3px 0" type="text" icon="el-icon-refresh" v-on:click="addNewMessage()">刷新</el-button>
+          <el-button style="float: right; padding: 3px 0" type="text" icon="el-icon-refresh" v-on:click="searchData()">刷新</el-button>
         </div>
         <div class="message-list">
           <ul>
             <li v-for="(message, index) in messages" :key="index" :class="{ 'new-message': index === 0 }">
               <el-row :gutter="5">
                 <el-col :span="4" :offset="0">
-                  <div style="cursor: pointer;" @click="openDeviceInfoDialog">
+                  <div style="cursor: pointer;" @click="openDeviceInfoDialog(message.clientimei)">
                     <img src="../../../../../static/images/project/device01.png" alt="">
                   </div>
                 </el-col>
                 <el-col :span="16" :offset="0">
-                  <div style="font-size: 14px;font-weight: bold;cursor: pointer;" @click="openDeviceInfoDialog">{{ message.name }}</div>
-                  <div style="font-size: 14px;" v-if="message.status == '1' && message.battery>=50">{{'设备运行状态' + (message.status=="1"?"正常":"异常") + "，电池余量" + message.battery + "%"}}</div>
-                  <div style="font-size: 14px;color: red;" v-else>{{'设备运行状态' + (message.status=="1"?"正常":"异常") + "，电池余量" + message.battery + "%"}}</div>
+                  <div style="font-size: 14px;font-weight: bold;">{{ message.segment + '-' + message.stakeNumber }}</div>
+                    <div style="font-size: 14px;" v-if="message.catalogval == '0' && (message.voltage/500*100) >= 50">{{ '设备运行状态' +
+                      (message.catalogval == "0" ? "正常" : "异常") + "，电池余量" + (message.voltage/500*100).toFixed(0) + "%" }}</div>
+                    <div style="font-size: 14px;color: red;" v-else>{{ '设备运行状态' + (message.catalogval == "0" ? "正常" : "异常") + "，电池余量"
+                      + (message.voltage/500*100).toFixed(0) + "%" }}</div>
                 </el-col>
                 <el-col :span="4" :offset="0">
                   <div style="float: right;">{{ message.time }}</div>
@@ -43,7 +45,7 @@
       </el-card>
     </div>
 
-    <device-info :deviceInfoDialog = "deviceInfoDialog" @changeDeviceInfoDialog="changeDeviceInfoDialog"></device-info>
+    <device-info :deviceInfoDialog = "deviceInfoDialog" :deviceCode="deviceCode" @changeDeviceInfoDialog="changeDeviceInfoDialog"></device-info>
   </div>
 </template>
 
@@ -61,6 +63,7 @@ export default {
       messages: [],
       currentTime: '',
       deviceInfoDialog: false,
+      deviceCode: ''
     };
   },
   methods: {
@@ -88,18 +91,22 @@ export default {
       });
     },
     getDeviceMessage() {
+      let param = {};
+      // param.clientimei = this.deviceCode;
       this.$request({
-        url: '/api/info/getDeviceInfo',
+        url: '/tmOriginData/getPageListCatalogH0/1/50',
         method: 'post',
-        data: {}
+        data: param
       }).then(res => {
-        this.messages = res.data.data.list;
+        let data = res.data.result_data;
+        this.messages = data.list;
       });
     },
     changeDeviceInfoDialog(value) {
       this.deviceInfoDialog = value;
     },
-    openDeviceInfoDialog () {
+    openDeviceInfoDialog (code) {
+      this.deviceCode = code;
       this.deviceInfoDialog = true;
     },
   },

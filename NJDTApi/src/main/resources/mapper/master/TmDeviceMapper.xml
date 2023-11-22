@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsti.tunnel.monitor.dao.master.TmDeviceDao">
+  <resultMap id="BaseResultMap" type="com.jsti.tunnel.monitor.bean.TmDevice">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="model" jdbcType="VARCHAR" property="model" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="clientip" jdbcType="VARCHAR" property="clientip" />
+    <result column="clientport" jdbcType="VARCHAR" property="clientport" />
+    <result column="device_type" jdbcType="VARCHAR" property="deviceType" />
+    <result column="line" jdbcType="VARCHAR" property="line" />
+    <result column="segment" jdbcType="VARCHAR" property="segment" />
+    <result column="stake_number" jdbcType="VARCHAR" property="stakeNumber" />
+    <result column="install_position" jdbcType="VARCHAR" property="installPosition" />
+    <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
+    <result column="collect_time" jdbcType="TIMESTAMP" property="collectTime" />
+    <result column="subsecond" jdbcType="VARCHAR" property="subsecond" />
+    <result column="realtime_physical_data" jdbcType="VARCHAR" property="realtimePhysicalData" />
+    <result column="status" property="status" />
+    <result column="pic1" property="pic1" />
+    <result column="enabled" jdbcType="INTEGER" property="enabled" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, code, `name`, model, `type`, clientip, clientport, device_type, line, segment, stake_number, install_position, serial_number,
+    collect_time, subsecond, realtime_physical_data, status, pic1, enabled
+  </sql>
+
+  <select id="selectList" parameterType="com.jsti.tunnel.monitor.pojo.TmDeviceParams" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tm_device
+    <where>
+        <if test="name !=null">and name like CONCAT('%',#{name},'%')</if>
+        <if test="code !=null">and code like CONCAT('%',#{code},'%')</if>
+        <if test="model !=null">and model=#{model}</if>
+        <if test="type !=null">and type=#{type}</if>
+        <if test="segment !=null">and segment=#{segment}</if>
+        <if test="line !=null">and line=#{line}</if>
+        <if test="status !=null">and status=#{status}</if>
+    </where>
+  </select>
+  
+  <select id="selectIdsByCodes" parameterType="java.util.List" resultType="java.lang.Integer">
+	    select
+	    id
+	    from tm_device
+	    where code in
+		<foreach collection="list" item="code" index="index" open="(" close=")" separator=",">
+		  #{code}
+		</foreach>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tm_device
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tm_device
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.jsti.tunnel.monitor.bean.TmDevice" useGeneratedKeys="true">
+    insert into tm_device (code, `name`, model, 
+      `type`, device_type, segment, 
+      stake_number, warning_data, signal_out, 
+      measure_range, electricity_supply, install_position, 
+      enabled, serial_number, collect_time, 
+      subsecond, realtime_physical_data)
+    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{deviceType,jdbcType=VARCHAR}, #{segment,jdbcType=VARCHAR}, 
+      #{stakeNumber,jdbcType=VARCHAR}, #{warningData,jdbcType=DECIMAL}, #{signalOut,jdbcType=VARCHAR}, 
+      #{measureRange,jdbcType=VARCHAR}, #{electricitySupply,jdbcType=VARCHAR}, #{installPosition,jdbcType=VARCHAR}, 
+      #{enabled,jdbcType=INTEGER}, #{serialNumber,jdbcType=VARCHAR}, #{collectTime,jdbcType=TIMESTAMP}, 
+      #{subsecond,jdbcType=DECIMAL}, #{realtimePhysicalData,jdbcType=DECIMAL})
+  </insert>
+
+
+  <update id="updateByPrimaryKey" parameterType="com.jsti.tunnel.monitor.bean.TmDevice">
+    update tm_device
+    set code = #{code,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=VARCHAR},
+      device_type = #{deviceType,jdbcType=VARCHAR},
+      segment = #{segment,jdbcType=VARCHAR},
+      stake_number = #{stakeNumber,jdbcType=VARCHAR},
+      warning_data = #{warningData,jdbcType=DECIMAL},
+      signal_out = #{signalOut,jdbcType=VARCHAR},
+      measure_range = #{measureRange,jdbcType=VARCHAR},
+      electricity_supply = #{electricitySupply,jdbcType=VARCHAR},
+      install_position = #{installPosition,jdbcType=VARCHAR},
+      enabled = #{enabled,jdbcType=INTEGER},
+      serial_number = #{serialNumber,jdbcType=VARCHAR},
+      collect_time = #{collectTime,jdbcType=TIMESTAMP},
+      subsecond = #{subsecond,jdbcType=DECIMAL},
+      realtime_physical_data = #{realtimePhysicalData,jdbcType=DECIMAL},
+      warning_level = #{warningLevel,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+</mapper>

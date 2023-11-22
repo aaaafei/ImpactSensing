@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsti.tunnel.monitor.dao.master.TmWarningRecordsDao">
+  <resultMap id="BaseResultMap" type="com.jsti.tunnel.monitor.bean.TmWarningRecords">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="deviceid" jdbcType="VARCHAR" property="deviceid" />
+    <result column="val" jdbcType="DECIMAL" property="val" />
+    <result column="warning_value" jdbcType="DECIMAL" property="warningValue" />
+    <result column="collect_time" jdbcType="TIMESTAMP" property="collectTime" />
+    <result column="warning_level" jdbcType="VARCHAR" property="warningLevel" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="type" jdbcType="VARCHAR" property="monitorType" />
+    <result column="segment" jdbcType="VARCHAR" property="segment" />
+    <result column="stake_number" jdbcType="VARCHAR" property="stakeNumber" />
+    <result column="install_position" jdbcType="VARCHAR" property="installPosition" />
+    <result column="device_code" jdbcType="VARCHAR" property="deviceCode" />
+    <result column="line" jdbcType="VARCHAR" property="line" />
+    <result column="device2_code" jdbcType="VARCHAR" property="device2Code" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, deviceid, val, warning_value, collect_time, warning_level, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tm_warning_records wr
+
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectDataList" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    wr.*, d.type, d.segment, d.stake_number, d.install_position, d.code as device_code, d.line, d2.`code` as device2_code
+    from tm_warning_records wr
+    LEFT JOIN tm_device d ON d.id = wr.deviceid
+    LEFT JOIN tm_device d2 ON d2.id = wr.remark
+    <where>
+        <if test="deviceid!=null">deviceid=#{deviceid}</if>
+        <if test="warning_level!=null">and warning_level!=null</if>
+        <if test="collect_time!=null">and wr.collect_time = #{collect_time}</if>
+        <if test="timeRangeBegin!=null">and wr.collect_time >= #{timeRangeBegin}</if>
+        <if test="timeRangeEnd!=null">and {timeRangeEnd} >= wr.collect_time</if>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tm_warning_records
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.jsti.tunnel.monitor.bean.TmWarningRecords" useGeneratedKeys="true">
+    insert into tm_warning_records (deviceid, val, warning_value, 
+      collect_time, warning_level, remark
+      )
+    values (#{deviceid,jdbcType=VARCHAR}, #{val,jdbcType=DECIMAL}, #{warningValue,jdbcType=DECIMAL}, 
+      #{collectTime,jdbcType=TIMESTAMP}, #{warningLevel,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.jsti.tunnel.monitor.bean.TmWarningRecords">
+    update tm_warning_records
+    set deviceid = #{deviceid,jdbcType=VARCHAR},
+      val = #{val,jdbcType=DECIMAL},
+      warning_value = #{warningValue,jdbcType=DECIMAL},
+      collect_time = #{collectTime,jdbcType=TIMESTAMP},
+      warning_level = #{warningLevel,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

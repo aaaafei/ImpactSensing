@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsti.tunnel.monitor.dao.master.UserDao" >
+    <resultMap id="BaseResultMap" type="com.jsti.tunnel.monitor.bean.User" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="age" property="age" jdbcType="INTEGER" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="truename" property="truename"/>
+    </resultMap>
+    <resultMap id="userMap" type="com.jsti.tunnel.monitor.bean.User">
+        <id property="id" column="ID"/>
+        <result property="username" column="username"/>
+        <result property="password" column="PASSWORD"/>
+        <result property="organid" column="organid"/>
+        <collection property="roles" ofType="com.jsti.tunnel.monitor.bean.Role">
+            <result column="name" property="name"/>
+        </collection>
+    </resultMap>
+
+    <select id="getAll" resultMap="BaseResultMap"  >
+        SELECT id,username,age,password FROM sys_user
+    </select>
+
+    <select id="getUsers" resultMap="BaseResultMap" parameterType="com.jsti.tunnel.monitor.bean.User">
+        SELECT u.*,o.ORGANNAME FROM sys_user u left join sys_org o on u.ORGANID= o.ID 
+        <where>
+        	<if test="id != null">and u.ID = #{id}</if>
+        	<if test="username != null">and u.USERNAME = #{username}</if>
+        	<if test="password != null">and u.PASSWORD = #{password}</if>
+            <if test="organid != null">and u.organid=#{organid}</if>
+            <if test="positionid != null">and u.positionid=#{positionid}</if>
+        </where>
+    </select>
+
+    <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+        SELECT
+        id,username,age,password
+        FROM sys_user
+        WHERE id = #{id}
+    </select>
+
+    <select id="getByUserIds" parameterType="java.util.List" resultMap="BaseResultMap">
+        select id,username,truename FROM sys_user where id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="insert" parameterType="com.jsti.tunnel.monitor.bean.User" >
+        INSERT INTO
+        sys_user
+        (username,age,password,TRUENAME,ORGANID,BIRTH,MOBILE,POSITIONID,SEX,WORKNO,IDNO,PHONE)
+        VALUES
+        (#{username}, #{age},#{password},#{truename},#{organid},#{birth},#{mobile},#{positionid},#{sex},#{workno},#{idno},#{phone})
+    </insert>
+
+    <update id="update" parameterType="com.jsti.tunnel.monitor.bean.User">
+        UPDATE
+        sys_user
+        SET
+        <if test="username != null">userName = #{username},</if>
+        <if test="organid != null and organid != 0">ORGANID = #{organid},</if>
+        <if test="age != null">age = #{age},</if>
+        <if test="password != null">password = #{password},</if>
+        id = #{id}
+        WHERE
+        id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer" >
+        DELETE FROM
+        sys_user
+        WHERE
+        id =#{id}
+    </delete>
+
+
+    <select id="findByUserName" parameterType="String" resultMap="userMap">
+        select u.*
+        ,r.name
+        from sys_user u
+        LEFT JOIN sys_role_user sru on u.id= sru.Sys_User_id
+        LEFT JOIN sys_role r on sru.sys_role_id=r.id
+        where username= #{username}
+    </select>
+</mapper>

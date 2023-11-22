@@ -27,7 +27,7 @@ module.exports = {
       //   }
       // },
       '/api/': {
-        target: 'http://localhost:3000/',
+        target: 'http://localhost:8089/',
         // target: 'http://xt.yuanxd.com:9120/',
         changeOrigin: true,
         pathRewrite: {

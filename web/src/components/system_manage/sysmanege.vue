@@ -58,12 +58,11 @@
               <span slot="title">角色管理</span>
             </el-menu-item>
           </router-link>
-          <router-link to="/post">
+          <!-- <router-link to="/post">
             <el-menu-item index="4" style="text-align: center" @click="change(176,'岗位管理')">
-              <!--  <i class="el-icon-menu"></i>-->
               <span slot="title">岗位管理</span>
             </el-menu-item>
-          </router-link>
+          </router-link> -->
         </el-menu>
         <span class="selected-tip" id="cdc" :style="styleObject">
            <span>{{tipText}}</span>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsti.tunnel.monitor.dao.cluster.TmHealthHistoryDao">
+
+    <resultMap id="BaseResultMap" type="com.jsti.tunnel.monitor.bean.TmHealthHistory">
+        <result column="model_id" property="model_id"/>
+        <result column="health_value" property="health_value"/> 
+        <result column="calculate_time" property="calculate_time"/>
+    </resultMap>
+
+    <insert id="add" parameterType="com.jsti.tunnel.monitor.bean.TmHealthHistory">
+        insert into tm_health_history
+        (model_id,health_value,calculate_time)
+        values
+        (#{model_id},#{health_value},#{calculate_time})
+    </insert>
+ 
+    <select id="getData" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select model_id,health_value,calculate_time from tm_health_history a 
+        <where>
+            <if test="model_id != null">a.model_id = #{model_id}</if>
+            <if test="from_date != null">and a.calculate_time >= #{from_date}</if>
+            <if test="end_date != null">and #{end_date} >= a.calculate_time</if>
+        </where>
+        order by a.calculate_time asc
+    </select>
+    
+    <select id="getLastOne" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select model_id,health_value,calculate_time from tm_health_history a 
+        <where>
+            <if test="model_id != null">a.model_id = #{model_id}</if> 
+            <if test="end_date != null">and #{end_date} >= a.calculate_time</if>
+        </where>
+          order by a.calculate_time desc limit 1
+        
+    </select>
+
+ 
+ 
+
+</mapper>

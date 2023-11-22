@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsti.tunnel.monitor.dao.master.TmCalculateModelDao">
+  <resultMap id="BaseResultMap" type="com.jsti.tunnel.monitor.bean.TmCalculateModel">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="line" jdbcType="VARCHAR" property="line" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="no" jdbcType="VARCHAR" property="no" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="weightiness" jdbcType="VARCHAR" property="weightiness" />
+    <result column="parent_category_id" jdbcType="INTEGER" property="parent_category_id" />
+    <result column="is_leaf" jdbcType="BIT" property="is_leaf" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, line, `type`, `no`, description, weightiness, parent_category_id, is_leaf,health_value
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tm_calculate_model
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectRootNodeDataList" parameterType="com.jsti.tunnel.monitor.bean.TmCalculateModel" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tm_calculate_model
+    where parent_category_id is null 
+    <if test="line!=null">and line=#{line}</if>
+    <if test="no!=null">and no=#{no}</if> 
+  </select>
+
+  <select id="selectDataList" parameterType="com.jsti.tunnel.monitor.bean.TmCalculateModel" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tm_calculate_model
+    <where>
+    	<if test="line!=null">and line=#{line}</if>
+    	<if test="type!=null">and type=#{type}</if>
+    	<if test="parent_category_id!=null">and parent_category_id=#{parent_category_id}</if>
+   	 	<if test="no!=null">and no=#{no}</if> 
+    </where>
+  </select>
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tm_calculate_model
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.jsti.tunnel.monitor.bean.TmCalculateModel" useGeneratedKeys="true">
+    insert into tm_calculate_model (line, `type`, `no`,
+      description, weightiness, parent_category_id,
+      is_leaf)
+    values (#{line,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{no,jdbcType=VARCHAR},
+      #{description,jdbcType=VARCHAR}, #{weightiness,jdbcType=VARCHAR}, #{parent_category_id,jdbcType=INTEGER},
+      #{is_leaf,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.jsti.tunnel.monitor.bean.TmCalculateModel" useGeneratedKeys="true">
+    insert into tm_calculate_model
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="line != null">
+        line,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="no != null">
+        `no`,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="weightiness != null">
+        weightiness,
+      </if>
+      <if test="parent_category_id != null">
+        parent_category_id,
+      </if>
+      <if test="is_leaf != null">
+        is_leaf,
+      </if>
+      <if test="health_value != null">
+        health_value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="line != null">
+        #{line,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="no != null">
+        #{no,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="weightiness != null">
+        #{weightiness,jdbcType=VARCHAR},
+      </if>
+      <if test="parent_category_id != null">
+        #{parent_category_id,jdbcType=INTEGER},
+      </if>
+      <if test="is_leaf != null">
+        #{is_leaf,jdbcType=BIT},
+      </if>
+      <if test="health_value != null">
+        #{health_value,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.jsti.tunnel.monitor.bean.TmCalculateModel">
+    update tm_calculate_model
+    <set>
+      <if test="line != null">
+        line = #{line,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="no != null">
+        `no` = #{no,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="weightiness != null">
+        weightiness = #{weightiness,jdbcType=VARCHAR},
+      </if>
+      <if test="parent_category_id != null">
+        parent_category_id = #{parent_category_id,jdbcType=INTEGER},
+      </if>
+      <if test="is_leaf != null">
+        is_leaf = #{is_leaf,jdbcType=BIT},
+      </if>
+      <if test="health_value != null">
+        health_value = #{health_value,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.jsti.tunnel.monitor.bean.TmCalculateModel">
+    update tm_calculate_model
+    set line = #{line,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=VARCHAR},
+      `no` = #{no,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      weightiness = #{weightiness,jdbcType=VARCHAR},
+      parent_category_id = #{parent_category_id,jdbcType=INTEGER},
+      is_leaf = #{is_leaf,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

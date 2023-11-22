@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsti.tunnel.monitor.dao.master.TmOtherAlarmRecordsDao">
+  <resultMap id="BaseResultMap" type="com.jsti.tunnel.monitor.bean.TmOtherAlarmRecords">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="is_device_error" jdbcType="INTEGER" property="isDeviceError" />
+    <result column="deviceid" jdbcType="VARCHAR" property="deviceid" />
+    <result column="report_time" jdbcType="TIMESTAMP" property="reportTime" />
+    <result column="disposal" jdbcType="VARCHAR" property="disposal" />
+    <result column="type" jdbcType="VARCHAR" property="monitorType" />
+    <result column="segment" jdbcType="VARCHAR" property="segment" />
+    <result column="stake_number" jdbcType="VARCHAR" property="stakeNumber" />
+    <result column="install_position" jdbcType="VARCHAR" property="installPosition" />
+    <result column="device_code" jdbcType="VARCHAR" property="deviceCode" />
+    <result column="line" jdbcType="VARCHAR" property="line" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, content, is_device_error, deviceid, report_time, disposal
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tm_other_alarm_records
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectDataList" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tm_other_alarm_records
+    <where>
+      <if test="title!=null">title like concat('%',#{title},'%')</if>
+      <if test="is_device_error!=null">and is_device_error=#{is_device_error}</if>
+      <if test="deviceid!=null">and deviceid=#{deviceid}</if>
+      <if test="timeRangeBegin!=null">and report_time >= #{timeRangeBegin}</if>
+      <if test="timeRangeEnd!=null">and {timeRangeEnd} >= report_time</if>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tm_other_alarm_records
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.jsti.tunnel.monitor.bean.TmOtherAlarmRecords" useGeneratedKeys="true">
+    insert into tm_other_alarm_records (title, content, is_device_error, 
+      deviceid, report_time, disposal
+      )
+    values (#{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{isDeviceError,jdbcType=INTEGER}, 
+      #{deviceid,jdbcType=VARCHAR}, #{reportTime,jdbcType=TIMESTAMP}, #{disposal,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.jsti.tunnel.monitor.bean.TmOtherAlarmRecords">
+    update tm_other_alarm_records
+    set title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      is_device_error = #{isDeviceError,jdbcType=INTEGER},
+      deviceid = #{deviceid,jdbcType=VARCHAR},
+      report_time = #{reportTime,jdbcType=TIMESTAMP},
+      disposal = #{disposal,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

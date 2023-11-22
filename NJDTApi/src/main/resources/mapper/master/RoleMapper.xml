@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsti.tunnel.monitor.dao.master.RoleDao" >
+    <resultMap id="BaseResultMap" type="com.jsti.tunnel.monitor.bean.Role" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="des" property="des" jdbcType="VARCHAR" />
+        <result column="mod" property="mod" jdbcType="INTEGER" />
+        <result column="level" property="level" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+     <resultMap id="BaseRoleDaataMap" type="com.jsti.tunnel.monitor.pojo.RoleData" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="des" property="des" jdbcType="VARCHAR" />
+        <result column="count" property="usercount" jdbcType="INTEGER" />
+    </resultMap>
+    
+    
+     <select id="getRole" parameterType="com.jsti.tunnel.monitor.bean.Role" resultMap="BaseResultMap">
+        SELECT 
+        * 
+         FROM sys_role
+         where 1=1
+         <if test="id != null and id != 0">and id = #{id}</if>
+         <if test="name != null">and name = #{name}</if>
+         order by id asc
+    </select>
+    
+    <select id="getRolesCount" parameterType="com.jsti.tunnel.monitor.bean.Role" resultMap="BaseRoleDaataMap">
+        select s.*,p.count from sys_role s LEFT JOIN  (select sys_role_id,count(sys_role_id) as count from sys_role_user  GROUP BY sys_role_id) p on p.sys_role_id = s.id 
+         where 1=1
+         <if test="id != null and id != 0">and s.id = #{id}</if>
+         <if test="name != null">and s.name = #{name}</if>
+         <if test="des != null">and s.des LIKE CONCAT('%',#{des},'%')</if>
+         order by id asc
+    </select>
+    
+    
+
+    <insert id="insert" parameterType="com.jsti.tunnel.monitor.bean.Role" >
+        INSERT INTO
+        sys_role
+        (name,des,level,remark)
+        VALUES
+        (#{name},#{des},#{level},#{remark})
+    </insert>
+
+    <update id="update" parameterType="com.jsti.tunnel.monitor.bean.Role" >
+        UPDATE
+        sys_role
+        SET
+        <if test="name != null">name = #{name},</if>
+        <if test="des != null">des = #{des},</if>
+        <if test="level != null and level != 0">level = #{level},</if>
+        <if test="remark != null">remark = #{remark},</if>
+        id = #{id}
+        WHERE
+        id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer" >
+        delete from sys_role
+        WHERE
+        id =#{id}
+    </delete>
+    
+    <delete id="roleUnBindUser" parameterType="java.lang.Integer" >
+        delete from sys_role_user where sys_user_id = #{userId,jdbcType=INTEGER}
+    </delete>
+    
+    <delete id="roleUnBindPermission" parameterType="java.lang.Integer" >
+        delete from sys_permission_role where role_id = #{roleId,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="roleBindPermission" parameterType="java.util.Map">
+       insert into sys_permission_role (role_id,permission_id) values (#{roleId},#{permissionId})
+    </insert>
+    
+    <insert id="roleBindUser" parameterType="java.util.Map">
+       insert into sys_role_user (sys_user_id,sys_role_id) values (#{userId},#{roleId})
+    </insert>
+    
+     <insert id="roleBindDepartment" parameterType="java.util.Map">
+       insert into sys_role_department (sys_department_id,sys_role_id) values (#{departmentId},#{roleId})
+    </insert>
+    
+     <insert id="roleBindJob" parameterType="java.util.Map">
+       insert into sys_role_job (sys_job_id,sys_role_id) values (#{jobId},#{roleId})
+    </insert>
+    
+    
+    <select id="getRoleByDept" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+       select * from sys_role where id in (select sys_role_id from sys_role_department where sys_department_id=#{departmentId})
+    </select>
+    
+    <select id="getRoleByUser" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+       select * from sys_role where id in (select sys_role_id from sys_role_user where sys_user_id=#{userId})
+    </select>
+    
+     <select id="getRoleByPosition" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+       select * from sys_role where id in (select sys_role_id from sys_role_job where sys_job_id=#{positionId})
+    </select>
+    
+    
+    <select id="getRoleByPermision" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+       select p.*,s.permission_type as 'mod' from sys_role p,(select * from sys_permission_role where permission_id=#{permisionid,jdbcType=INTEGER}) s where   p.id=s.role_id 
+    </select>
+    
+    
+    
+    
+</mapper>

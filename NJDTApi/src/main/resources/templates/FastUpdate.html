@@ -1,0 +1,22 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Insert title here</title>
+</head>
+<body style="text-align:center;">
+    <form action="/file/upload" method="POST" enctype="multipart/form-data">
+        <p>单文件上传：</p><br/>
+        <input type="file" name="file"/>
+        <input type="submit" value = "上传"/>
+    </form>
+    <hr/>
+    <form method="POST" enctype="multipart/form-data"
+          action="/file/batch/upload">
+        <p>多文件上传(只传一个会报错)：</p>
+        <p>文件1：<input type="file" name="file" /></p>
+        <p>文件2：<input type="file" name="file" /></p>
+        <p><input type="submit" value="上传" /></p>
+    </form>
+
+</body>
+</html>

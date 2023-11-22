@@ -1,10 +1,10 @@
 <template>
 <div style="border-bottom: 2px solid #dcdfe6;">
 
-  <el-row style="height:80px; background:url('../../../../static/images/h_head.png') center no-repeat;background-color:#f0f6fd;">
+  <el-row class="header">
     <el-col :span="4">&nbsp;</el-col>
     <el-col :span="13">
-      <img src="../../../../static/images/project/logo_banner.png" style="vertical-align: middle;height:80px;"/>
+      <img src="../../../../static/images/project/logo_banner_V2.png" style="vertical-align: middle;height:80px;"/>
     </el-col>
     <el-col :span="3" style="padding-top:25px;text-align:right;">
       <span style="color:#757575;font-size:16px;">欢迎您：{{user.truename}}</span>
@@ -31,7 +31,8 @@
         <el-menu-item index="monitor" route="monitor">监测数据</el-menu-item>
         <el-submenu index="3">
           <template slot="title">告警中心</template>
-          <el-menu-item index="deviceWarning" route="deviceWarning">设备告警</el-menu-item>
+          <el-menu-item index="deviceWarning" route="deviceWarning">受撞告警</el-menu-item>
+          <el-menu-item index="otherWarning" route="otherWarning">其他告警</el-menu-item>
           <el-menu-item index="infoWarning" route="infoWarning">已发送通知</el-menu-item>
         </el-submenu>
         <el-submenu index="4">
@@ -252,5 +253,10 @@
 }
 a {
   text-decoration: none
+}
+.header{
+  height:80px; 
+  background:url('../../../../static/images/h_head.png') center no-repeat;
+  background-color:#f0f6fd;
 }
 </style>

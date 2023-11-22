@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsti.tunnel.monitor.dao.master.FxbgDao">
+
+    <resultMap id="BaseResultMap" type="com.jsti.tunnel.monitor.bean.Fxbg">
+        <id column="uuid" property="uuid" />
+        <result column="name" property="name"/>
+        <result column="bglx" property="bglx"/>
+        <result column="full_path" property="full_path" />
+        <result column="report_date" property="report_date" />
+        <result column="creator" property="creator"/>
+    </resultMap>
+
+    <insert id="add" parameterType="com.jsti.tunnel.monitor.bean.Fxbg">
+        insert into fxbg
+        (name,bglx,full_path,report_date,creator)
+        values
+        (#{name},#{bglx},#{full_path},#{report_date},#{creator})
+    </insert>
+    
+    <delete id="delete" parameterType="java.util.List">
+        delete from fxbg where uuid in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+    </delete>
+
+    <update id="update" parameterType="com.jsti.tunnel.monitor.bean.Fxbg">
+        update fxbg
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="bglx != null">bglx = #{bglx},</if>
+            <if test="full_path != null">full_path = #{full_path},</if>
+            <if test="report_date != null">report_date = #{report_date},</if>
+            <if test="creator != null">creator = #{creator}</if>
+        </trim>
+        where uuid = #{uuid}
+    </update>
+
+    <select id="getPageData" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select * from fxbg a
+        <where>
+            <if test="bglx != null">a.bglx = #{bglx}</if>
+            <if test="name != null">and a.name like concat('%',#{name},'%')</if>
+            <if test="full_path != null">and a.full_path like concat('%',#{full_path},'%')</if>
+            <if test="report_date_begin != null">and a.report_date >= #{report_date_begin}</if>
+            <if test="report_date_end != null">and #{report_date_end} >= a.report_date</if>
+        </where>
+        order by a.report_date desc
+    </select>
+
+    <select id="getObjByUUID" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from fxbg a
+        WHERE a.uuid = #{uuid}
+    </select>
+
+    <select id="getDataNum" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(*) from fxbg
+        <where>
+            <if test="bglx != null">bglx = #{bglx}</if>
+            <if test="name != null">and name like concat('%',#{name},'%')</if>
+            <if test="full_path != null">and a.full_path like concat('%',#{full_path},'%')</if>
+            <if test="report_date_begin != null">and a.report_date >= #{report_date_begin}</if>
+            <if test="report_date_end != null">and #{report_date_end} >= a.report_date</if>
+        </where>
+    </select>
+
+</mapper>

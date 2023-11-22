@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsti.tunnel.monitor.dao.master.SafetyDao">
+
+    <resultMap id="BaseResultMap" type="com.jsti.tunnel.monitor.bean.Safety">
+        <id column="id" property="id" />
+        <result column="safety_value" property="safety_value"/>
+		<result column="safety_label" property="safety_label"/>
+		<result column="segment_id" property="segment_id"/>
+		<result column="segment_name" property="segment_name"/>
+		<result column="device_intact_rate" property="device_intact_rate"/>
+		<result column="line" property="line"/>
+		<result column="collect_time" property="collect_time"/>
+    </resultMap>
+
+    <insert id="addRealTimeData" parameterType="com.jsti.tunnel.monitor.bean.Safety">
+        insert into tm_safety_realtime
+        (safety_value,safety_label,segment_name,line,collect_time)
+        values
+        (#{safety_value},#{safety_label},#{segment_name},#{line},#{collect_time})
+    </insert>
+
+    <delete id="deleteAllRealTimeData">
+        delete from tm_safety_realtime
+    </delete>
+
+    <update id="updateRealTimeData" parameterType="com.jsti.tunnel.monitor.bean.Safety">
+        update tm_safety_realtime
+        <trim prefix="set" suffixOverrides=",">
+            <if test="safety_value != null">safety_value = #{safety_value},</if>
+			<if test="safety_label != null">safety_label = #{safety_label},</if>
+			<if test="segment_name != null">segment_name = #{segment_name},</if>
+			<if test="line != null">line = #{line},</if>
+			<if test="collect_time != null">collect_time = #{collect_time}</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getRealTimeData" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select * from tm_safety_realtime a
+        <where>
+            <if test="safety_label != null">and a.safety_label like concat('%',#{safety_label},'%') </if>
+            <if test="segment_name != null">and a.segment_name like concat('%',#{segment_name},'%') </if>
+            <if test="line != null">and a.line like concat('%',#{line},'%') </if>
+        </where>
+
+    </select>
+
+    <select id="getRealTimeObjByID" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select * from tm_safety_realtime a
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="getDataNum4RealTime" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(*) from tm_safety_realtime
+        <where>
+            <if test="safety_label != null">and a.safety_label like concat('%',#{safety_label},'%') </if>
+            <if test="segment_name != null">and a.segment_name like concat('%',#{segment_name},'%') </if>
+            <if test="line != null">and a.line like concat('%',#{line},'%') </if>
+        </where>
+    </select>
+
+    <!--以下是历史数据部分-->
+
+    <insert id="addHistoryData" parameterType="com.jsti.tunnel.monitor.bean.Safety">
+        insert into tm_safety_history
+        (safety_value,safety_label,segment_name,line,collect_time)
+        values
+        (#{safety_value},#{safety_label},#{segment_name},#{line},#{collect_time})
+    </insert>
+
+    <select id="getHistoryData" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select * from tm_safety_history a
+        <where>
+            <if test="safety_label != null">and a.safety_label like concat('%',#{safety_label},'%') </if>
+            <if test="segment_name != null">and a.segment_name like concat('%',#{segment_name},'%') </if>
+            <if test="line != null">and a.line like concat('%',#{line},'%') </if>
+            <if test="begin_time != null">and a.collect_time >= #{begin_time} </if>
+            <if test="end_time != null">and #{end_time} > a.collect_time </if>
+        </where>
+        order by a.collect_time asc
+    </select>
+
+    <select id="getHistoryObjByID" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select * from tm_safety_history a
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="getDataNum4History" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(*) from tm_safety_history
+        <where>
+            <if test="safety_label != null">and a.safety_label like concat('%',#{safety_label},'%') </if>
+            <if test="segment_name != null">and a.segment_name like concat('%',#{segment_name},'%') </if>
+            <if test="line != null">and a.line like concat('%',#{line},'%') </if>
+            <if test="begin_time != null">and a.collect_time >= #{begin_time} </if>
+            <if test="end_time != null">and #{end_time} > a.collect_time </if>
+        </where>
+    </select>
+</mapper>
