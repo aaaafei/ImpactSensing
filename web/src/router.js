@@ -165,6 +165,10 @@ const routers = [ // 定义vue-router的路径和对应的组件，注意是comp
                 path: '/gongwu',
                 component: () => import('./viewsjkjc/gongwu/gongwu.vue')
             },
+            {
+                path: '/baseinfo',
+                component: () => import('./viewsjkjc/bridge_baseinfo/list.vue')
+            },
         ]
     },
     {

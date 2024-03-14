@@ -41,7 +41,7 @@
           <el-menu-item index="4-2" route="patrolList">检修记录</el-menu-item>
         </el-submenu>
         <!-- <el-menu-item index="5">统计分析</el-menu-item> -->
-        <el-menu-item index="gongwu" route="gongwu">智慧工务</el-menu-item>
+        <el-menu-item index="baseinfo" route="baseinfo">基础信息</el-menu-item>
         <el-menu-item index="sysmanage" route="sysmanage">系统设置</el-menu-item>
       </el-menu>
     </el-col>

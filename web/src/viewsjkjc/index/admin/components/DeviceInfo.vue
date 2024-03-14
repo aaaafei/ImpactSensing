@@ -39,10 +39,11 @@
                     </div>
                   </el-col>
                   <el-col :span="16" :offset="0">
-                    <div style="font-size: 14px;font-weight: bold;">{{ message.segment + '-' + message.stakeNumber }}</div>
+                    <div style="font-size: 14px;font-weight: bold;">{{ message.segment + '-' + message.stakeNumber + '&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;' +message.timstamp}} </div>
+
                     <div style="font-size: 14px;" v-if="message.catalogval == '0' && (message.voltage/500*100) >= 50">{{ '设备运行状态' +
-                      (message.catalogval == "0" ? "正常" : "异常") + "，电池余量" + (message.voltage/500*100).toFixed(0) + "%" }}</div>
-                    <div style="font-size: 14px;color: red;" v-else>{{ '设备运行状态' + (message.catalogval == "0" ? "正常" : "异常") + "，电池余量"
+                      (message.catalogval == "0" ? "正常" : "正常") + "，电池余量" + (message.voltage/500*100).toFixed(0) + "%" }}</div>
+                    <div style="font-size: 14px;color: black;" v-else>{{ '设备运行状态' + (message.catalogval == "0" ? "正常" : "正常") + "，电池余量"
                       + (message.voltage/500*100).toFixed(0) + "%" }}</div>
                   </el-col>
                   <el-col :span="4" :offset="0">
@@ -84,18 +85,18 @@ export default {
       }).then(res => {
         let data = res.data.result_data;
         data['electricVolume'] = 400;
-        data['electricPercentage'] = data.electricVolume/500*100;
+        data['electricPercentage'] = (data.signalval/35*100).toFixed(0);
         this.deviceMap = data;
         this.deviceInfo = [
         { label: "设备IMEI", value: data.code },
         { label: "监测项目", value: data.type },
         { label: "电池余量", value: data.electricPercentage + '%' },
-        { label: "电池容量", value: "500mAh" },
+        { label: "电池容量", value: "450mAh" },
         { label: "线路", value: data.line },
         { label: "区间", value: data.segment },
         { label: "桩号/桥墩号", value: data.stakeNumber },
         { label: "安装位置", value: data.installPosition },
-        { label: "安装日期", value: "2023-11-10" },
+        // { label: "安装日期", value: "2023-11-28" },
       ]
       });
       

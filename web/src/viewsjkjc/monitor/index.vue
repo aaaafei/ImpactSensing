@@ -32,14 +32,22 @@
       :header-cell-style="{ background: '#A1B6D8', color: '#fff' }">
       <!-- <el-table-column prop="c" label="序号" width="50" align="center"></el-table-column> -->
       <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
-      <el-table-column prop="clientimei" label="设备imei" align="center"></el-table-column>
+      <el-table-column label="设备imei" align="center" 
+      :filters="[{ text: '862205058920614', value: '862205058920614' }, { text: '862205058915408', value: '862205058915408' }]"
+      :filter-method="filterTag"
+      filter-placement="bottom-end">
+        <template slot-scope="scope">
+          {{scope.row.clientimei}}
+        </template>
+      </el-table-column>
       <el-table-column prop="mtype" label="监测项目" align="center"></el-table-column>
       <el-table-column prop="line" label="线路" align="center"></el-table-column>
       <el-table-column prop="segment" label="区间" align="center"></el-table-column>
       <el-table-column prop="stakeNumber" label="桩号/桥墩号" align="center"></el-table-column>
       <el-table-column prop="content" label="内容" width="280" align="center">
         <template slot-scope="scope">
-          <span> {{ "状态：正常，剩余电量：" + scope.row.voltage }}</span>
+          <span v-if="scope.row.catalogval=='1'"> {{ "状态：正常，电池余量：" + (scope.row.signalval/35*100).toFixed(0) + "%"  }}</span>
+          <span style="color:black;" v-else> {{ "状态：正常，电池余量：" + (scope.row.signalval/35*100).toFixed(0) + "%" }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="timstamp" label="时间" align="center"></el-table-column>
@@ -74,6 +82,7 @@ export default {
       beginDate: null,
       endDate: null,
       search: "",
+      param:{}
     };
   },
   methods: {
@@ -86,14 +95,13 @@ export default {
       this.searchData();
     },
     searchData() {
-      let param = {};
-      if (this.beginDate != undefined) param.beginDate = this.beginDate;
-      if (this.endDate != undefined) param.endDate = this.endDate;
-      if (this.search != undefined) param.search = this.search;
+      if (this.beginDate != undefined) this.param.beginDate = this.beginDate;
+      if (this.endDate != undefined) this.param.endDate = this.endDate;
+      if (this.search != undefined) this.param.search = this.search;
       this.$request({
-        url: '/tmOriginData/getPageListCatalogH0/' + this.page.pageNum + '/' + this.page.pageSize,
+        url: '/tmOriginData/getPageListCatalogS6/' + this.page.pageNum + '/' + this.page.pageSize,
         method: 'post',
-        data: param
+        data: this.param
       }).then(res => {
         let data = res.data.result_data;
         this.page.total = data.total;
@@ -102,6 +110,10 @@ export default {
         this.deviceList = data.list;
       });
 
+    },
+    filterTag(value, row) {
+      console.log(value,row);
+      // return row.clientimei == value;
     },
   },
   mounted: function () {

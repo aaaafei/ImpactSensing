@@ -9,11 +9,11 @@
         <hr>
         <div class="container">
           <img src="../../../../../static/images/project/home-device.png" alt="" class="centered-image" style="height: 15px;">
-          <span class="centered-text">设备总数：100</span>
+          <span class="centered-text">设备总数：2</span>
         </div>
         <div class="container">
           <img src="../../../../../static/images/project/home-connected.png" alt="" class="centered-image" style="height: 15px;">
-          <span class="centered-text">已连接数：98</span>
+          <span class="centered-text">已连接数：2</span>
         </div>
       </el-col>
     </el-row>
@@ -50,8 +50,8 @@ export default {
     },
     initChart() {
       let dChart = echarts.init(this.$refs.pieChart);
-      let pass_rate = 98;
-      let total = 100;
+      let pass_rate = 100;
+      let total = 2;
       dChart.setOption({
         grid: {
           top:0,

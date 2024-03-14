@@ -32,14 +32,14 @@
       <el-table-column prop="line" label="线路" align="center"></el-table-column>
       <el-table-column prop="segment" label="区间" align="center"></el-table-column>
       <el-table-column prop="stakeNumber" label="桩号、桥墩号" align="center"></el-table-column>
-      <el-table-column prop="_pic" label="现场安装图片" width="280" align="center">
+      <!-- <el-table-column prop="_pic" label="现场安装图片" width="280" align="center">
         <template slot-scope='scope'>
           <img :src="item" alt="" v-for="(item,index) in images" :key="index" style="height: 40px;margin-left: 2px;" @click="previewImage(item)">
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column prop="_tx" label="检修记录" width="120" align="center">
         <template slot-scope='scope'>
-          <span style="color:#1684FC;cursor: pointer;" @click="openDisposeRecordDialog">10次</span>
+          <span style="color:#1684FC;cursor: pointer;" @click="openDisposeRecordDialog">0次</span>
         </template>
       </el-table-column>
       <!-- <el-table-column prop="_sz" label="更换记录" width="120" align="center">

@@ -41,16 +41,7 @@ export default {
     },
     getInfo() {
       this.tableData = [
-        { content: "更换电池", username:"陈飞", record_datetime:"2023-8-15 13:24" },
-        { content: "更换电池", username:"陈飞", record_datetime:"2023-8-15 13:24" },
-        { content: "更换电池", username:"陈飞", record_datetime:"2023-8-15 13:24" },
-        { content: "更换电池", username:"陈飞", record_datetime:"2023-8-15 13:24" },
-        { content: "更换电池", username:"陈飞", record_datetime:"2023-8-15 13:24" },
-        { content: "更换电池", username:"陈飞", record_datetime:"2023-8-15 13:24" },
-        { content: "更换电池", username:"陈飞", record_datetime:"2023-8-15 13:24" },
-        { content: "更换电池", username:"陈飞", record_datetime:"2023-8-15 13:24" },
-        { content: "更换电池", username:"陈飞", record_datetime:"2023-8-15 13:24" },
-        { content: "更换电池", username:"陈飞", record_datetime:"2023-8-15 13:24" },
+        
       ]
     },
   },

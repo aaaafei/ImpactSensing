@@ -9,12 +9,12 @@
         </div>
       </div>
 
-      <div class="up-map-div-left">
+      <div class="up-map-div-left" style="display: none;">
         <div style="text-align: center;font-size: 20px;font-weight: bold;">{{ currentPosition.title }}</div>
         <div style="text-indent: 32px;">{{ currentPosition.note }}</div>
       </div>
 
-      <div class="up-map-div-bottom">
+      <div class="up-map-div-bottom" style="display: none;">
         <div style="display: inline-block;float: left;padding-left: 5px;padding-right: 2px;">
           <span style="color: #1684FC;"><br>现<br>场<br>图<br>片</span>
         </div>
@@ -28,7 +28,7 @@
       <baidu-map id="bmap" class="map" :scroll-wheel-zoom="true" :center="center" :zoom="zoom" @ready="handler">
       </baidu-map>
 
-      <device-info :deviceInfoDialog="deviceInfoDialog" @changeDeviceInfoDialog="changeDeviceInfoDialog"></device-info>
+      <device-info :deviceInfoDialog="deviceInfoDialog" :deviceCode="deviceCode" @changeDeviceInfoDialog="changeDeviceInfoDialog"></device-info>
 
       <el-dialog title="" :visible.sync="imgDialogVisible" width="50%">
         <div style="height:600px;text-align: center;">
@@ -53,17 +53,17 @@ export default {
       deviceInfoDialog: false,
       markerList: [],//风险源点位对象集合
       carouselList: [{
-        id: 34,
-        jd: 118.90185,
-        wd: 32.055767,
+        id: 862205058920614,
+        jd: 118.667597,
+        wd: 31.948282,
         zoom: 20,
-        name: '马群站'
+        name: '刘村-马骡圩区间'
       }, {
-        id: 61,
+        id: 862205058915408,
         jd: 118.820464,
         wd: 32.117678,
         zoom: 18,
-        name: '迈晓区间'
+        name: '迈皋桥-晓庄区间'
       }],
       center: { lng: 0, lat: 0 },
       zoom: null,
@@ -74,11 +74,12 @@ export default {
       imgDialogVisible: false,
       images: [],
       previewImg: '',
+      deviceCode:'',
     }
   },
   mounted() {
     setTimeout(() => {
-      this.carouselCompany();
+      // this.carouselCompany();
       this.showDeviceOnMap();
       this.getPosInfo();
       this.getImages();
@@ -97,13 +98,14 @@ export default {
       map.addControl(new BMap.NavigationControl());
       let stCtrl = new BMap.PanoramaControl(); //构造全景控件
       stCtrl.setOffset(new BMap.Size(40, 40));
-      this.map.addControl(stCtrl);//添加全景控件
+      // this.map.addControl(stCtrl);//添加全景控件
       //右上角：地图\卫星 切换
       this.map.addControl(new BMap.MapTypeControl({ mapTypes: [BMAP_NORMAL_MAP, BMAP_SATELLITE_MAP] }));
       let selItem = this.carouselList[this.activeIndex];
-      this.map.centerAndZoom(new BMap.Point(selItem.jd, selItem.wd), selItem.zoom);
-      this.map.setMapStyle({ style: 'googlelite' });
-      this.map.setMapType(BMAP_SATELLITE_MAP);
+      // this.map.centerAndZoom(new BMap.Point(selItem.jd, selItem.wd), selItem.zoom);
+      this.map.centerAndZoom("南京市", 12);
+      this.map.setMapStyle({style:'googlelite'});
+      // this.map.setMapType(BMAP_SATELLITE_MAP);
       //   this.initStatPoint();
     },
     carouselCompany() {
@@ -131,10 +133,10 @@ export default {
     },
     showDeviceOnMap() {
       this.$request({
-        url: '/riskSource/getRiskSourcePageData/1/1000',
+        url: '/tmDevice/getDevicePageData/1/1000',
         method: 'POST',
         data: {
-          pos_id: ""
+          
         }
       }).then(res => {
         // console.log("返回的点位数据",res);
@@ -157,11 +159,15 @@ export default {
             //标记点位
             // var marker = new BMap.Marker(new BMap.Point(stationObj.longitude, stationObj.latitude));
             var marker = new BMap.Marker(new BMap.Point(stationObj.longitude, stationObj.latitude), { icon: myIcon });
-            var label = new BMap.Label("<font color='#0F0F0F'>" + stationObj.code + ":" + stationObj.battery + "</font>", { offset: new BMap.Size(-10, -20) });
+            var label = new BMap.Label("<font color='#0F0F0F'>" + stationObj.segment + "-" + stationObj.type + '-' + stationObj.id + "</font>", { offset: new BMap.Size(-10, -20) });
             label.setStyle({ "border-color": "#ffffff" });
             marker.setLabel(label);
+            marker.customData = {
+                code: stationObj.code
+            };
             marker.addEventListener('click', (e) => {
-              console.log(stationObj);
+              console.log(e.target);
+              this.deviceCode = e.target.customData.code;
               this.deviceInfoDialog = true;
             });
             this.map.addOverlay(marker);
@@ -173,21 +179,21 @@ export default {
       this.deviceInfoDialog = value;
     },
     getPosInfo() {
-      let currentPosId = this.carouselList[this.activeIndex].id;
-      this.$request({
-        url: '/empty',
-        method: 'post',
-        data: {}
-      }).then(res => {
-        let data = res.data;
-        if (currentPosId == 61) {
-          this.currentPosition.title = "迈晓区间";
-          this.currentPosition.note = "待补充";
-        } else {
-          this.currentPosition.title = "马群站";
-          this.currentPosition.note = "马群站是南京地铁2号线和南京地铁S6号线的换乘车站，车站位于南京市栖霞区中山门大街与马群新街交叉路口左侧。南京地铁2号线为高架三层侧式车站，南京地铁S6号线为地下二层岛式车站，可与南京麒麟有轨电车站外换乘。";
-        }
-      });
+      // let currentPosId = this.carouselList[this.activeIndex].id;
+      // this.$request({
+      //   url: '/empty',
+      //   method: 'post',
+      //   data: {}
+      // }).then(res => {
+      //   let data = res.data;
+      //   if (currentPosId == 61) {
+      //     this.currentPosition.title = "迈晓区间";
+      //     this.currentPosition.note = "待补充";
+      //   } else {
+      //     this.currentPosition.title = "马群站";
+      //     this.currentPosition.note = "马群站是南京地铁2号线和南京地铁S6号线的换乘车站，车站位于南京市栖霞区中山门大街与马群新街交叉路口左侧。南京地铁2号线为高架三层侧式车站，南京地铁S6号线为地下二层岛式车站，可与南京麒麟有轨电车站外换乘。";
+      //   }
+      // });
     },
     getImages() {
       this.images = [

@@ -34,7 +34,7 @@
       <el-table-column prop="stakeNumber" label="桩号、桥墩号" align="center"></el-table-column>
       <el-table-column prop="_pic" label="现场安装图片" width="280" align="center">
         <template slot-scope='scope'>
-          <img :src="item" alt="" v-for="(item,index) in images" :key="index" style="height: 40px;margin-left: 2px;" @click="previewImage(item)">
+          <img :src="$STATIC_PREFIX+'images/demo/'+item" alt="" v-for="(item,index) in scope.row.pic1.split(',')" :key="index" style="height: 40px;margin-left: 2px;" @click="previewImage($STATIC_PREFIX+'images/demo/'+item)">
         </template>
       </el-table-column>
       <el-table-column prop="_tx" label="通信部件" width="120" align="center">
@@ -88,7 +88,6 @@ export default {
       search: '',
       deviceInfoDialog: false,
       imgDialogVisible: false,
-      images: [this.$STATIC_PREFIX+'images/demo/xc001.png',this.$STATIC_PREFIX+'images/demo/xc002.png',this.$STATIC_PREFIX+'images/demo/xc003.png'],
       previewImg: '',
       deviceCode:'',
     };

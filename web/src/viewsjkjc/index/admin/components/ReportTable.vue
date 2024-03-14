@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="12" :offset="0">
         <div style="float: left;">
-          <span style="font-weight:bold;color: #1684FC;">1小时内动态信息</span>
+          <span style="font-weight:bold;color: #1684FC;">最新动态信息</span>
         </div>
       </el-col>
       <el-col :span="12" :offset="0">
@@ -29,10 +29,10 @@
                 </el-col>
                 <el-col :span="16" :offset="0">
                   <div style="font-size: 14px;font-weight: bold;">{{ message.segment + '-' + message.stakeNumber }}</div>
-                    <div style="font-size: 14px;" v-if="message.catalogval == '0' && (message.voltage/500*100) >= 50">{{ '设备运行状态' +
-                      (message.catalogval == "0" ? "正常" : "异常") + "，电池余量" + (message.voltage/500*100).toFixed(0) + "%" }}</div>
-                    <div style="font-size: 14px;color: red;" v-else>{{ '设备运行状态' + (message.catalogval == "0" ? "正常" : "异常") + "，电池余量"
-                      + (message.voltage/500*100).toFixed(0) + "%" }}</div>
+                    <div style="font-size: 14px;" v-if="message.catalogval == '1' && (message.signalval/35*100) >= 50">{{ '设备运行状态' +
+                      (message.catalogval == "1" ? "正常" : "异常") + "，电池余量" + (message.signalval/35*100).toFixed(0) + "%" }}</div>
+                    <div style="font-size: 14px;color: black;" v-else>{{ '设备运行状态' + (message.catalogval == "1" ? "正常" : "正常") + "，电池余量"
+                      + (message.signalval/35*100).toFixed(0) + "%" }}</div>
                 </el-col>
                 <el-col :span="4" :offset="0">
                   <div style="float: right;">{{ message.time }}</div>
@@ -67,18 +67,6 @@ export default {
     };
   },
   methods: {
-    addNewMessage() {
-      let i = Math.floor(Math.random() * (5 - 0 + 1)) + 0;
-      let message = {
-        name: ["马群新街01","马群新街02","马群新街03","马群新街04","马群新街05"][i % 5],
-        position: ["马群新街01桥墩","马群新街02桥墩","马群新街03桥墩","马群新街04桥墩","马群新街05桥墩"][i % 5],
-        status: "" + Math.round(Math.random()),
-        battery: Math.floor(Math.random() * (99 - 30 + 1)) + 30,
-        time: new Date().getHours() + ":" + new Date().getMinutes()
-      };
-      this.messages.unshift(message);
-      this.messages = this.messages.slice(0, 20);
-    },
     getLatestDeviceMessage() {
       this.$request({
         url: '/api/info/getLatestDeviceInfo',
@@ -94,7 +82,7 @@ export default {
       let param = {};
       // param.clientimei = this.deviceCode;
       this.$request({
-        url: '/tmOriginData/getPageListCatalogH0/1/50',
+        url: '/tmOriginData/getPageListCatalogS6/1/50',
         method: 'post',
         data: param
       }).then(res => {

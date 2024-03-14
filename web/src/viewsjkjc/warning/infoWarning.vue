@@ -63,21 +63,7 @@ export default {
         total: 15
       },
       deviceList: [
-        {"c":"1","info_type":"钉钉消息","info_content":"XX发生事故，位于2号线上行马群站078号桥墩，请及时处理","info_reciever":"工务分公司","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"2","info_type":"钉钉消息","info_content":"XX发生事故，位于2号线上行马群站078号桥墩，请及时处理","info_reciever":"工务分公司","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"3","info_type":"钉钉消息","info_content":"XX发生事故，位于2号线上行马群站078号桥墩，请及时处理","info_reciever":"工务分公司","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"4","info_type":"短消息","info_content":"XX发生事故，位于2号线上行马群站078号桥墩，请及时处理","info_reciever":"工务分公司","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"5","info_type":"短消息","info_content":"XX发生事故，位于2号线上行马群站078号桥墩，请及时处理","info_reciever":"工务分公司","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"6","info_type":"短消息","info_content":"XX发生事故，位于2号线上行马群站078号桥墩，请及时处理","info_reciever":"工务分公司","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"7","info_type":"短消息","info_content":"XX发生事故，位于2号线上行马群站078号桥墩，请及时处理","info_reciever":"工务分公司","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"8","info_type":"短消息","info_content":"XX发生事故，位于2号线上行马群站078号桥墩，请及时处理","info_reciever":"工务分公司","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"9","info_type":"短消息","info_content":"XX发生事故，位于2号线上行马群站078号桥墩，请及时处理","info_reciever":"工务分公司","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"10","info_type":"钉钉消息","info_content":"XX发生事故，位于2号线上行马群站078号桥墩，请及时处理","info_reciever":"工务分公司","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"11","info_type":"钉钉消息","info_content":"XX发生事故，位于2号线上行马群站078号桥墩，请及时处理","info_reciever":"工务分公司","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"12","info_type":"钉钉消息","info_content":"XX发生事故，位于2号线上行马群站078号桥墩，请及时处理","info_reciever":"工务分公司","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"13","info_type":"钉钉消息","info_content":"XX发生事故，位于2号线上行马群站078号桥墩，请及时处理","info_reciever":"工务分公司","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"14","info_type":"钉钉消息","info_content":"XX发生事故，位于2号线上行马群站078号桥墩，请及时处理","info_reciever":"工务分公司","record_datetime":"2023-02-23 12:23:00"},
-        {"c":"15","info_type":"钉钉消息","info_content":"XX发生事故，位于2号线上行马群站078号桥墩，请及时处理","info_reciever":"工务分公司","record_datetime":"2023-02-23 12:23:00"},
+        
       ],
     };
   },
