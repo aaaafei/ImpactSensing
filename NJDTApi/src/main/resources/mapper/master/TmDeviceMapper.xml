@@ -19,13 +19,15 @@
     <result column="subsecond" jdbcType="VARCHAR" property="subsecond" />
     <result column="realtime_physical_data" jdbcType="VARCHAR" property="realtimePhysicalData" />
     <result column="status" property="status" />
+    <result column="longitude" property="longitude" />
+    <result column="latitude" property="latitude" />
     <result column="pic1" property="pic1" />
     <result column="enabled" jdbcType="INTEGER" property="enabled" />
   </resultMap>
 
   <sql id="Base_Column_List">
     id, code, `name`, model, `type`, clientip, clientport, device_type, line, segment, stake_number, install_position, serial_number,
-    collect_time, subsecond, realtime_physical_data, status, pic1, enabled
+    collect_time, subsecond, realtime_physical_data, status, longitude, latitude, pic1, enabled
   </sql>
 
   <select id="selectList" parameterType="com.jsti.tunnel.monitor.pojo.TmDeviceParams" resultMap="BaseResultMap">
@@ -33,6 +35,7 @@
     <include refid="Base_Column_List" />
     from tm_device
     <where>
+        enabled = '1'
         <if test="name !=null">and name like CONCAT('%',#{name},'%')</if>
         <if test="code !=null">and code like CONCAT('%',#{code},'%')</if>
         <if test="model !=null">and model=#{model}</if>

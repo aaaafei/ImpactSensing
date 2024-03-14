@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsti.tunnel.monitor.dao.master.TmDispositionResultDao">
+  <resultMap id="BaseResultMap" type="com.jsti.tunnel.monitor.bean.TmDispositionResult">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="alarm_record_id" jdbcType="INTEGER" property="alarmRecordId" />
+    <result column="alarm_type" jdbcType="VARCHAR" property="alarmType" />
+    <result column="orgid" jdbcType="INTEGER" property="orgid" />
+    <result column="orgname" jdbcType="VARCHAR" property="orgname" />
+    <result column="team_leader_userid" jdbcType="INTEGER" property="teamLeaderUserid" />
+    <result column="dispose_priciple" jdbcType="INTEGER" property="disposePriciple" />
+    <result column="dispatch_datetime" property="dispatchDatetime" />
+    <result column="pics" jdbcType="VARCHAR" property="pics" />
+    <result column="disposal_result" jdbcType="VARCHAR" property="disposalResult" />
+    <result column="elimination_apply_userid" jdbcType="INTEGER" property="eliminationApplyUserid" />
+    <result column="apply_datetime" property="applyDatetime" />
+  </resultMap>
+
+  <select id="selectList" parameterType="com.jsti.tunnel.monitor.bean.TmDispositionResult" resultMap="BaseResultMap">
+    select r.*, org.ORGANNAME as orgname
+    from tm_disposition_result r
+    left join sys_org org on org.ID = r.orgid
+    <where>
+        <if test="alarmRecordId !=null">and alarm_record_id = #{alarmRecordId}</if>
+        <if test="alarmType !=null">and alarm_type = #{alarmType}</if>
+        <if test="orgid !=null">and orgid = #{orgid}</if>
+    </where>
+  </select>
+
+  <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select r.*, org.ORGANNAME as orgname
+    from tm_disposition_result r
+    left join sys_org org on org.ID = r.orgid
+    where r.id = #{id}
+  </select>
+
+  <delete id="delete" parameterType="java.lang.Long">
+    delete from tm_disposition_result
+    where id = #{id}
+  </delete>
+
+  <insert id="insert" parameterType="com.jsti.tunnel.monitor.bean.TmDispositionResult">
+    insert into tm_disposition_result (
+      `alarm_record_id`, `alarm_type`, `orgid`, `team_leader_userid`, `dispose_priciple`, `dispatch_datetime`, `pics`, `disposal_result`, `elimination_apply_userid`, `apply_datetime`)
+    values (
+      #{alarmRecordId}, #{alarmType}, #{orgid}, #{teamLeaderUserid}, #{disposePriciple}, #{dispatchDatetime}, #{pics}, #{disposalResult}, #{eliminationApplyUserid}, #{applyDatetime}
+    )
+  </insert>
+
+
+  <update id="update" parameterType="com.jsti.tunnel.monitor.bean.TmDispositionResult">
+    UPDATE
+    tm_disposition_result
+    SET
+    <if test="alarmRecordId != null">alarm_record_id = #{alarmRecordId},</if>
+    <if test="alarmType != null">alarm_type = #{alarmType},</if>
+    <if test="orgid != null">orgid = #{orgid},</if>
+    <if test="teamLeaderUserid != null">team_leader_userid = #{teamLeaderUserid},</if>
+    <if test="disposePriciple != null">dispose_priciple = #{disposePriciple},</if>
+    <if test="dispatchDatetime != null">dispatch_datetime = #{dispatchDatetime},</if>
+    <if test="pics != null">pics = #{pics},</if>
+    <if test="disposalResult != null">disposal_result = #{disposalResult},</if>
+    <if test="eliminationApplyUserid != null">elimination_apply_userid = #{eliminationApplyUserid},</if>
+    <if test="applyDatetime != null">apply_datetime = #{applyDatetime},</if>
+    id = #{id}
+    WHERE
+    id = #{id}
+  </update>
+
+
+</mapper>

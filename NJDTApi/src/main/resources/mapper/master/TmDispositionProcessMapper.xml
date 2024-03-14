@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsti.tunnel.monitor.dao.master.TmDispositionProcessDao">
+  <resultMap id="BaseResultMap" type="com.jsti.tunnel.monitor.bean.TmDispositionProcess">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="alarm_record_id" jdbcType="INTEGER" property="alarmRecordId" />
+    <result column="alarm_type" jdbcType="VARCHAR" property="alarmType" />
+    <result column="node" jdbcType="VARCHAR" property="node" />
+    <result column="userid" jdbcType="INTEGER" property="userid" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="result" jdbcType="VARCHAR" property="result" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+    <result column="create_time" property="createTime" />
+  </resultMap>
+
+  <select id="selectList" parameterType="com.jsti.tunnel.monitor.bean.TmDispositionProcess" resultMap="BaseResultMap">
+    select *
+    from tm_disposition_process
+    <where>
+        <if test="alarmRecordId !=null">and alarm_record_id = #{alarmRecordId}</if>
+        <if test="alarmType !=null">and alarm_type = #{alarmType}</if>
+    </where>
+  </select>
+
+  <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select *
+    from tm_disposition_process
+    where id = #{id}
+  </select>
+
+  <delete id="delete" parameterType="java.lang.Long">
+    delete from tm_disposition_process
+    where id = #{id}
+  </delete>
+
+  <insert id="insert" parameterType="com.jsti.tunnel.monitor.bean.TmDispositionProcess">
+    insert into tm_disposition_process (
+      `alarm_record_id`, `alarm_type`, `node`, `userid`, `username`, `result`, `comment`, `create_time`)
+    values (
+      #{alarmRecordId}, #{alarmType}, #{node}, #{userid}, #{username}, #{result}, #{comment}, #{createTime}
+    )
+  </insert>
+
+
+  <update id="update" parameterType="com.jsti.tunnel.monitor.bean.TmDispositionProcess">
+    UPDATE
+    tm_disposition_process
+    SET
+    <if test="alarmRecordId != null">alarm_record_id = #{alarmRecordId},</if>
+    <if test="alarmType != null">alarm_type = #{alarmType},</if>
+    <if test="node != null">node = #{node},</if>
+    <if test="userid != null">userid = #{userid},</if>
+    <if test="username != null">username = #{username},</if>
+    <if test="result != null">result = #{result},</if>
+    <if test="comment != null">comment = #{comment},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+    id = #{id}
+    WHERE
+    id = #{id}
+  </update>
+
+
+</mapper>

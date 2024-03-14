@@ -16,15 +16,15 @@
     <result column="device_code" jdbcType="VARCHAR" property="deviceCode" />
     <result column="line" jdbcType="VARCHAR" property="line" />
     <result column="device2_code" jdbcType="VARCHAR" property="device2Code" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, deviceid, val, warning_value, collect_time, warning_level, remark
+    id, deviceid, val, warning_value, collect_time, warning_level, remark, status
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
-    <include refid="Base_Column_List" />
+    wr.*
     from tm_warning_records wr
-
     where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectDataList" parameterType="java.util.Map" resultMap="BaseResultMap">
@@ -47,10 +47,10 @@
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.jsti.tunnel.monitor.bean.TmWarningRecords" useGeneratedKeys="true">
     insert into tm_warning_records (deviceid, val, warning_value, 
-      collect_time, warning_level, remark
+      collect_time, warning_level, remark, status
       )
     values (#{deviceid,jdbcType=VARCHAR}, #{val,jdbcType=DECIMAL}, #{warningValue,jdbcType=DECIMAL}, 
-      #{collectTime,jdbcType=TIMESTAMP}, #{warningLevel,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      #{collectTime,jdbcType=TIMESTAMP}, #{warningLevel,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{status}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.jsti.tunnel.monitor.bean.TmWarningRecords">
@@ -60,7 +60,8 @@
       warning_value = #{warningValue,jdbcType=DECIMAL},
       collect_time = #{collectTime,jdbcType=TIMESTAMP},
       warning_level = #{warningLevel,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR}
+      remark = #{remark,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

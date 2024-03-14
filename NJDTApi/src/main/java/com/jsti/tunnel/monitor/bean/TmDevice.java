@@ -44,6 +44,10 @@ public class TmDevice implements Serializable {
 
     private String status;
 
+    private String longitude;
+
+    private String latitude;
+
     private String  pic1;
 
     private int enabled;

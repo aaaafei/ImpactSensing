@@ -40,5 +40,5 @@ public class TmWarningRecords implements Serializable {
 
     private String installPosition;
 
-
+    private String status;
 }

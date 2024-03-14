@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsti.tunnel.monitor.dao.master.TmBridgeBaseinfoDao">
+  <resultMap id="BaseResultMap" type="com.jsti.tunnel.monitor.bean.TmBridgeBaseinfo">
+    <id column="uuid" jdbcType="VARCHAR" property="uuid" />
+    <result column="sortno" jdbcType="INTEGER" property="sortno" />
+    <result column="line_code" jdbcType="VARCHAR" property="lineCode" />
+    <result column="line_name" jdbcType="VARCHAR" property="lineName" />
+    <result column="section_name" jdbcType="VARCHAR" property="sectionName" />
+    <result column="basic_type" jdbcType="VARCHAR" property="basicType" />
+    <result column="basic_mileage" jdbcType="VARCHAR" property="basicMileage" />
+    <result column="basic_length" jdbcType="VARCHAR" property="basicLength" />
+    <result column="pier_total_count" jdbcType="INTEGER" property="pierTotalCount" />
+    <result column="pier_normal_count" jdbcType="INTEGER" property="pierNormalCount" />
+    <result column="pier_transroad_count" jdbcType="INTEGER" property="pierTransroadCount" />
+    <result column="pier_transwater_count" jdbcType="INTEGER" property="pierTranswaterCount" />
+    <result column="pad_total_count" jdbcType="INTEGER" property="padTotalCount" />
+    <result column="pad_basin_type_count" jdbcType="INTEGER" property="padBasinTypeCount" />
+    <result column="pad_plate_type_count" jdbcType="INTEGER" property="padPlateTypeCount" />
+    <result column="pad_ball_type_count" jdbcType="INTEGER" property="padBallTypeCount" />
+    <result column="accessory_expansion_joint_count" jdbcType="INTEGER" property="accessoryExpansionJointCount" />
+    <result column="sound_barrier_mileage" jdbcType="VARCHAR" property="soundBarrierMileage" />
+    <result column="sound_barrier_position" jdbcType="VARCHAR" property="soundBarrierPosition" />
+    <result column="sound_barrier_type" jdbcType="VARCHAR" property="soundBarrierType" />
+    <result column="shielded_board_slab_mileage" jdbcType="VARCHAR" property="shieldedBoardSlabMileage" />
+    <result column="shielded_board_slab_type" jdbcType="VARCHAR" property="shieldedBoardSlabType" />
+    <result column="shielded_board_alc_mileage" jdbcType="VARCHAR" property="shieldedBoardAlcMileage" />
+    <result column="shielded_board_alc_type" jdbcType="VARCHAR" property="shieldedBoardAlcType" />
+    <result column="shielded_board_metal_mileage" jdbcType="VARCHAR" property="shieldedBoardMetalMileage" />
+    <result column="shielded_board_metal_type" jdbcType="VARCHAR" property="shieldedBoardMetalType" />
+    <result column="anti_collision_height_limitation" jdbcType="INTEGER" property="antiCollisionHeightLimitation" />
+    <result column="anti_collision_slab" jdbcType="INTEGER" property="antiCollisionSlab" />
+    <result column="anti_collision_rack" jdbcType="INTEGER" property="antiCollisionRack" />
+    <result column="anti_collision_label" jdbcType="INTEGER" property="antiCollisionLabel" />
+    <result column="anti_wall" jdbcType="INTEGER" property="antiWall" />
+    <result column="maintenance_platform_count" jdbcType="INTEGER" property="maintenancePlatformCount" />
+    <result column="maintenance_platform_pier" jdbcType="VARCHAR" property="maintenancePlatformPier" />
+  </resultMap>
+
+  <select id="selectList" parameterType="com.jsti.tunnel.monitor.bean.TmBridgeBaseinfo" resultMap="BaseResultMap">
+    select *
+    from tm_bridge_baseinfo
+    <where>
+        <if test="lineCode !=null">and line_code = #{lineCode}</if>
+        <if test="lineName !=null">and line_name like CONCAT('%',#{lineName},'%')</if>
+        <if test="sectionName !=null">and section_name like CONCAT('%',#{sectionName},'%')</if>
+        <if test="basicType !=null">and basic_type like CONCAT('%',#{basicType},'%')</if>
+    </where>
+  </select>
+
+  <select id="selectByUuid" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from tm_bridge_baseinfo
+    where uuid = #{uuid}
+  </select>
+
+  <delete id="delete" parameterType="java.lang.String">
+    delete from tm_bridge_baseinfo
+    where uuid = #{uuid}
+  </delete>
+
+  <insert id="insert" parameterType="com.jsti.tunnel.monitor.bean.TmBridgeBaseinfo">
+    insert into tm_bridge_baseinfo (
+      `uuid`, `sortno`, `line_code`, `line_name`, `section_name`, `basic_type`, `basic_mileage`, `basic_length`)
+    values (
+      #{uuid}, #{sortno}, #{lineCode}, #{lineName}, #{sectionName}, #{basicType}, #{basicMileage}, #{basicLength}
+    )
+  </insert>
+
+
+  <update id="update" parameterType="com.jsti.tunnel.monitor.bean.TmBridgeBaseinfo">
+    UPDATE
+    tm_bridge_baseinfo
+    SET
+    <if test="sortno != null">sortno = #{sortno},</if>
+    <if test="lineCode != null">line_code = #{lineCode},</if>
+    <if test="lineName != null">line_name = #{lineName},</if>
+    <if test="sectionName != null">section_name = #{sectionName},</if>
+    <if test="basicType != null">basic_type = #{basicType},</if>
+    <if test="basicMileage != null">basic_mileage = #{basicMileage},</if>
+    <if test="basicLength != null">basic_length = #{basicLength},</if>
+    <if test="pierTotalCount != null">pier_total_count = #{pierTotalCount},</if>
+    <if test="pierNormalCount != null">pier_normal_count = #{pierNormalCount},</if>
+    <if test="pierTransroadCount != null">pier_transroad_count = #{pierTransroadCount},</if>
+    <if test="pierTranswaterCount != null">pier_transwater_count = #{pierTranswaterCount},</if>
+    <if test="padTotalCount != null">pad_total_count = #{padTotalCount},</if>
+    <if test="padBasinTypeCount != null">pad_basin_type_count = #{padBasinTypeCount},</if>
+    <if test="padPlateTypeCount != null">pad_plate_type_count = #{padPlateTypeCount},</if>
+    <if test="padBallTypeCount != null">pad_ball_type_count = #{padBallTypeCount},</if>
+    <if test="accessoryExpansionJointCount != null">accessory_expansion_joint_count = #{accessoryExpansionJointCount},</if>
+    <if test="soundBarrierMileage != null">sound_barrier_mileage = #{soundBarrierMileage},</if>
+    <if test="soundBarrierPosition != null">sound_barrier_position = #{soundBarrierPosition},</if>
+    <if test="soundBarrierType != null">sound_barrier_type = #{soundBarrierType},</if>
+    <if test="shieldedBoardSlabMileage != null">shielded_board_slab_mileage = #{shieldedBoardSlabMileage},</if>
+    <if test="shieldedBoardSlabType != null">shielded_board_slab_type = #{shieldedBoardSlabType},</if>
+    <if test="shieldedBoardAlcMileage != null">shielded_board_alc_mileage = #{shieldedBoardAlcMileage},</if>
+    <if test="shieldedBoardAlcType != null">shielded_board_alc_type = #{shieldedBoardAlcType},</if>
+    <if test="shieldedBoardMetalMileage != null">shielded_board_metal_mileage = #{shieldedBoardMetalMileage},</if>
+    <if test="shieldedBoardMetalType != null">shielded_board_metal_type = #{shieldedBoardMetalType},</if>
+    <if test="antiCollisionHeightLimitation != null">anti_collision_height_limitation = #{antiCollisionHeightLimitation},</if>
+    <if test="antiCollisionSlab != null">anti_collision_slab = #{antiCollisionSlab},</if>
+    <if test="antiCollisionRack != null">anti_collision_rack = #{antiCollisionRack},</if>
+    <if test="antiCollisionLabel != null">anti_collision_label = #{antiCollisionLabel},</if>
+    <if test="antiWall != null">anti_wall = #{antiWall},</if>
+    <if test="maintenancePlatformCount != null">maintenance_platform_count = #{maintenancePlatformCount},</if>
+    <if test="maintenancePlatformPier != null">maintenance_platform_pier = #{maintenancePlatformPier},</if>
+    uuid = #{uuid}
+    WHERE
+    uuid = #{uuid}
+  </update>
+
+
+</mapper>

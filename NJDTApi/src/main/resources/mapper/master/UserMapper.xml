@@ -33,9 +33,9 @@
         </where>
     </select>
 
-    <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+    <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
         SELECT
-        id,username,age,password
+        id,username,truename,age,password
         FROM sys_user
         WHERE id = #{id}
     </select>
