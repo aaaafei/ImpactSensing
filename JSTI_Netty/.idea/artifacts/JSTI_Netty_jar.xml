@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="JSTI_Netty:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/JSTI_Netty_jar</output-path>
+    <root id="archive" name="JSTI_Netty.jar">
+      <element id="module-output" name="JSTI_Netty" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/netty-all-4.1.68.Final.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/mysql-connector-java-8.0.16.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
