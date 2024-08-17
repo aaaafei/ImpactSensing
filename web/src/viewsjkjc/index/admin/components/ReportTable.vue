@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="12" :offset="0">
         <div style="float: left;">
-          <span style="font-weight:bold;color: #1684FC;">最新动态信息</span>
+          <span style="font-weight:bold;color: #1684FC;">现在时间</span>
         </div>
       </el-col>
       <el-col :span="12" :offset="0">
@@ -15,8 +15,8 @@
     <div>
       <el-card class="box-card" shadow="never" :body-style="{ padding: '5px' }">
         <div slot="header" class="clearfix">
-          <span>设备信息</span>
-          <el-button style="float: right; padding: 3px 0" type="text" icon="el-icon-refresh" v-on:click="searchData()">刷新</el-button>
+          <span>最新动态（每分钟刷新）</span>
+          <el-button style="float: right; padding: 3px 0" type="text" icon="el-icon-refresh" @click="getDeviceMessage()">刷新</el-button>
         </div>
         <div class="message-list">
           <ul>
@@ -28,11 +28,20 @@
                   </div>
                 </el-col>
                 <el-col :span="16" :offset="0">
-                  <div style="font-size: 14px;font-weight: bold;">{{ message.segment + '-' + message.stakeNumber }}</div>
-                    <div style="font-size: 14px;" v-if="message.catalogval == '1' && (message.signalval/35*100) >= 50">{{ '设备运行状态' +
-                      (message.catalogval == "1" ? "正常" : "异常") + "，电池余量" + (message.signalval/35*100).toFixed(0) + "%" }}</div>
-                    <div style="font-size: 14px;color: black;" v-else>{{ '设备运行状态' + (message.catalogval == "1" ? "正常" : "正常") + "，电池余量"
-                      + (message.signalval/35*100).toFixed(0) + "%" }}</div>
+                  <div>
+                    <span style="font-size: 14px;font-weight: bold;">{{ message.segment + '-' + message.stakeNumber }}</span>
+                    <span style="font-size: 12px;">{{ message.timstamp }}</span>
+                    
+                  </div>
+                    <!-- 状态异常 -->
+                    <div style="font-size: 14px;color: red;" v-if="message.catalogval != '1'">{{ '设备运行状态' +
+                      (message.catalogval == "1" ? "正常" : "异常") + "，电池余量：" + (message.voltage/450*100).toFixed(0) + "%" }}</div>
+                    <!-- 低电量 -->
+                    <div style="font-size: 14px;color: red;" v-else-if="(message.voltage/450*100) < 50">{{ '设备运行状态' +
+                      (message.catalogval == "1" ? "正常" : "异常") + "，电池余量低：" + (message.voltage/450*100).toFixed(0) + "%" }}</div>
+                    <!-- 正常状态 -->
+                    <div style="font-size: 14px;" v-else>{{ '设备运行状态' + (message.catalogval == "1" ? "正常" : "异常") + "，电池余量："
+                      + (message.voltage/450*100).toFixed(0) + "%" }}</div>
                 </el-col>
                 <el-col :span="4" :offset="0">
                   <div style="float: right;">{{ message.time }}</div>
@@ -67,17 +76,6 @@ export default {
     };
   },
   methods: {
-    getLatestDeviceMessage() {
-      this.$request({
-        url: '/api/info/getLatestDeviceInfo',
-        method: 'post',
-        data: {}
-      }).then(res => {
-        let data = res.data.data.list;
-        this.messages.unshift(data[0]);
-        this.messages = this.messages.slice(0, 20);
-      });
-    },
     getDeviceMessage() {
       let param = {};
       // param.clientimei = this.deviceCode;
@@ -101,8 +99,10 @@ export default {
   mounted: function () {
     this.getDeviceMessage();
     setInterval(()=>{
-      console.log(formatDates(new Date(),'yyyy-MM-dd hh:mm'));
-      this.currentTime = formatDates(new Date(),'yyyy-MM-dd hh:mm');
+      this.currentTime = formatDates(new Date(),'yyyy-MM-dd hh:mm:ss');
+      if(this.currentTime.split(":")[2] == '00') {
+        this.getDeviceMessage()
+      }
     },1000);
   }
 };

@@ -79,15 +79,15 @@ export default {
               formatter: '{pass_rate|' + pass_rate +'%}'+ '\n\r' + '{desc|设备正常\n工作率}',
               rich: {
                 pass_rate:{
-                  fontSize: 26,
+                  fontSize: 20,
                   fontFamily : "微软雅黑",
                   color:'#1684FC'
                 },
                 desc: {
                   fontFamily : "微软雅黑",
-                  fontSize: 16,
+                  fontSize: 12,
                   color:'#6c7a89',
-                  lineHeight:16,
+                  lineHeight:14,
                 },
               }
             },

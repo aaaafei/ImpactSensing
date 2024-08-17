@@ -14,11 +14,12 @@
         </div>
       </el-col>
       <el-col :span="5">
-        <el-input placeholder="设备编码、设备名称、线路、桩号、桥墩号" prefix-icon="el-icon-search" v-model="search">
+        <el-input placeholder="设备编码、设备名称、线路、桩号、桥墩号" prefix-icon="el-icon-search" size="small" v-model="search">
         </el-input>
       </el-col>
-      <el-col :span="2" style="text-align: center;">
-        <el-button type="primary" @click="searchData">查询</el-button>
+      <el-col :span="3" style="text-align: center;">
+        <el-button type="primary" size="small" @click="searchData">查询</el-button>
+        <el-button type="warning" size="small" @click="handleAdd">新增</el-button>
       </el-col>
 
     </el-row>
@@ -49,9 +50,11 @@
           <span style="color:#1684FC">无撞击</span>
         </template>
       </el-table-column>
-      <el-table-column prop="_oper" label="操作" width="120" align="center">
+      <el-table-column prop="_oper" label="操作" width="250" align="center">
         <template slot-scope='scope'>
+          <el-button size="mini" plain type="warning" @click="handleEdit(scope.row.code)">编辑</el-button>
           <el-button size="mini" plain type="primary" @click="openDeviceInfoDialog(scope.row.code)">设备详情</el-button>
+          <el-button size="mini" plain type="danger" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -66,6 +69,40 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="编辑信息" :visible.sync="formDialogVisible" width="50%">
+      <div style="height:500px;text-align: center;">
+        <el-form ref="form" :model="form" label-width="80px"  size="small" height="500">
+          <el-form-item label="设备IMEI">
+            <el-input v-model="form.code"></el-input>
+          </el-form-item>
+          <el-form-item label="监测项">
+            <el-input v-model="form.type"></el-input>
+          </el-form-item>
+          <el-form-item label="线路">
+            <el-input v-model="form.line"></el-input>
+          </el-form-item>
+          <el-form-item label="区间名称">
+            <el-input v-model="form.segment"></el-input>
+          </el-form-item>
+          <el-form-item label="桩号、桥墩号">
+            <el-input v-model="form.stakeNumber"></el-input>
+          </el-form-item>
+          <el-form-item label="安装位置">
+            <el-input v-model="form.installPosition"></el-input>
+          </el-form-item>
+          <el-form-item label="经度">
+            <el-input v-model="form.longitude"></el-input>
+          </el-form-item>
+          <el-form-item label="纬度">
+            <el-input v-model="form.latitude"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="save">保存</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -73,7 +110,6 @@
 /* eslint-disable */
 import DeviceInfo from '../index/admin/components/DeviceInfo.vue'
 export default {
-  name: 'deviceWarning',
   components: {
     DeviceInfo,
   },
@@ -88,8 +124,10 @@ export default {
       search: '',
       deviceInfoDialog: false,
       imgDialogVisible: false,
+      formDialogVisible: false,
       previewImg: '',
       deviceCode:'',
+      form:{},
     };
   },
   methods: {
@@ -104,6 +142,17 @@ export default {
       this.previewImg = value;
       this.imgDialogVisible = true;
     },
+    resetForm() {
+      this.form.code = '';
+      this.form.installPosition = '';
+      this.form.line = '';
+      this.form.longitude = '';
+      this.form.latitude = '';
+      this.form.collectTime = '';
+      this.form.segment = '';
+      this.form.stakeNumber = '';
+      this.form.type = '';
+    },
     handleSizeChange(val) {
       this.page.pageSize = val;
       this.searchData();
@@ -111,6 +160,46 @@ export default {
     handleCurrentChange(val) {
       this.page.pageNum = val;
       this.searchData();
+    },
+    handleAdd() {
+      this.formDialogVisible = true;
+      this.resetForm();
+    },
+    handleEdit(code) {
+      this.$request({
+        url: '/tmDevice/getDeviceDataByCode/' + code,
+        method: 'post',
+        data: {}
+      }).then(res => {
+        this.form = res.data.result_data;
+        this.formDialogVisible = true;
+      });
+    },
+    handleDelete(row) {
+      this.$confirm('是否删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$request({
+          url: '/tmDevice/deleteDevice/'+ row.id + '/' + row.code,
+          method: 'post',
+        }).then(res => {
+          if(res.data.result_code != 0) {
+            this.$message({
+              message: res.data.result_desc,
+              type: 'danger'
+            });
+          }
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          });
+          this.searchData();
+        });
+      }).catch(() => {
+                  
+      });
     },
     searchData() {
       let param = {};
@@ -126,7 +215,20 @@ export default {
         this.page.pageSize = data.pageSize;
         this.deviceList = data.list;
       });
-
+    },
+    save() {
+      this.$request({
+        url: '/tmDevice/saveDevice',
+        method: 'post',
+        data: this.form
+      }).then(res => {
+        this.$message({
+          message: '保存成功',
+          type: 'success'
+        });
+        this.searchData();
+        this.formDialogVisible = false;
+      });
     },
   },
   mounted: function () {

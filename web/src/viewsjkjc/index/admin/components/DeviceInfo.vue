@@ -25,7 +25,8 @@
         <el-col :span="12" :offset="0">
           <div>
             <div style="display:inline-block; font-size: 28px;color:#7F83F7;">最新消息</div>
-            <div style="display:inline-block; float: right;padding-top: 15px;;"><span type="primary">查看更多>></span>
+            <div style="display:inline-block; float: right;padding-top: 15px;;">
+              <!-- <span type="primary">查看更多>></span> -->
             </div>
           </div>
 
@@ -41,8 +42,8 @@
                   <el-col :span="16" :offset="0">
                     <div style="font-size: 14px;font-weight: bold;">{{ message.segment + '-' + message.stakeNumber + '&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;' +message.timstamp}} </div>
 
-                    <div style="font-size: 14px;" v-if="message.catalogval == '0' && (message.voltage/500*100) >= 50">{{ '设备运行状态' +
-                      (message.catalogval == "0" ? "正常" : "正常") + "，电池余量" + (message.voltage/500*100).toFixed(0) + "%" }}</div>
+                    <div style="font-size: 14px;" v-if="message.catalogval == '0' && (message.voltage/450*100) >= 50">{{ '设备运行状态' +
+                      (message.catalogval == "0" ? "正常" : "正常") + "，电池余量" + (message.voltage/450*100).toFixed(0) + "%" }}</div>
                     <div style="font-size: 14px;color: black;" v-else>{{ '设备运行状态' + (message.catalogval == "0" ? "正常" : "正常") + "，电池余量"
                       + (message.voltage/500*100).toFixed(0) + "%" }}</div>
                   </el-col>
@@ -105,7 +106,7 @@ export default {
       let param = {};
       param.clientimei = this.deviceCode;
       this.$request({
-        url: '/tmOriginData/getPageListCatalogH0/1/15',
+        url: '/tmOriginData/getPageList/1/15',
         method: 'post',
         data: param
       }).then(res => {

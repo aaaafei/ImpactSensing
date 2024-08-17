@@ -46,8 +46,8 @@
       <el-table-column prop="stakeNumber" label="桩号/桥墩号" align="center"></el-table-column>
       <el-table-column prop="content" label="内容" width="280" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.catalogval=='1'"> {{ "状态：正常，电池余量：" + (scope.row.signalval/35*100).toFixed(0) + "%"  }}</span>
-          <span style="color:black;" v-else> {{ "状态：正常，电池余量：" + (scope.row.signalval/35*100).toFixed(0) + "%" }}</span>
+          <span v-if="scope.row.catalogval=='1'"> {{ "状态：正常，电池余量：" + (scope.row.voltage/450*100).toFixed(0) + "%"  }}</span>
+          <span v-else style="color:red;"> {{ "状态：异常，电池余量：" + (scope.row.voltage/450*100).toFixed(0) + "%" }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="timstamp" label="时间" align="center"></el-table-column>

@@ -32,13 +32,13 @@
     <el-table :data="deviceList" :height="tableHeight" border stripe 
       :header-cell-style="{ background: '#A1B6D8', color: '#fff' }">
       <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
-      <el-table-column prop="deviceCode" label="设备IMEI" align="center"></el-table-column>
+      <el-table-column prop="deviceCode" label="设备IMEI" width="180" align="center"></el-table-column>
       <el-table-column prop="monitorType" label="监测项目" align="center"></el-table-column>
       <el-table-column prop="line" label="线路" align="center"></el-table-column>
       <el-table-column prop="segment" label="区间" align="center"></el-table-column>
       <el-table-column prop="stakeNumber" label="桥墩号" align="center"></el-table-column>
       <el-table-column prop="remark" label="告警内容" width="280" align="center"></el-table-column>
-      <el-table-column prop="collectTime" label="时间" align="center"></el-table-column>
+      <el-table-column prop="collectTime" label="时间" width="180" align="center"></el-table-column>
       <el-table-column prop="status" label="当前处置进度" align="center">
         <template slot-scope="scope">
           <el-tag type="primary" v-if="scope.row.status == '1'">待班组长任务分配</el-tag>
