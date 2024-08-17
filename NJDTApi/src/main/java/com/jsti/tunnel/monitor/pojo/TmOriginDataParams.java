@@ -6,6 +6,7 @@ import com.jsti.tunnel.monitor.bean.TmOriginData;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class TmOriginDataParams extends TmOriginData {
@@ -14,4 +15,5 @@ public class TmOriginDataParams extends TmOriginData {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     Date endDate;
 	boolean needDataFilter = true;
+	List<String> clientimeiList;
 }

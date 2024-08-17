@@ -2,7 +2,10 @@ package com.jsti.tunnel.monitor.bean;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * tm_device
@@ -36,11 +39,15 @@ public class TmDevice implements Serializable {
 
     private String serialNumber;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date collectTime;
 
     private String subsecond;
 
     private String realtimePhysicalData;
+
+    private String voltage;
 
     private String status;
 

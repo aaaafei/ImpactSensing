@@ -16,8 +16,6 @@ public class TmWarningRecords implements Serializable {
 
     private String deviceCode;
     
-    private String device2Code;
-
     private String val;
 
     private String warningValue;

@@ -15,5 +15,6 @@ public interface TmDeviceService {
     TmDevice selectByDeviceCode(String deviceCode);
     void insert(TmDevice tmDevice);
     void updateByPrimaryKey(TmDevice tmDevice);
+    void updateByCode(TmDevice tmDevice);
     void deleteByPrimaryKey(Long id);
 }

@@ -4,7 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.jsti.tunnel.monitor.bean.TmDevice;
 import com.jsti.tunnel.monitor.bean.TmOriginData;
 import com.jsti.tunnel.monitor.bean.TmSubside;
-import com.jsti.tunnel.monitor.pojo.TmOriginDataParams; 
+import com.jsti.tunnel.monitor.pojo.TmDeviceParams;
+import com.jsti.tunnel.monitor.pojo.TmOriginDataParams;
 import com.jsti.tunnel.monitor.service.TmDeviceService;
 import com.jsti.tunnel.monitor.service.TmOriginDataService;
 import com.jsti.tunnel.monitor.util.DeviceDataUtil;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/tmOriginData")
@@ -30,10 +33,31 @@ public class TmOriginDataController extends BaseController{
 
     @PostMapping("/getPageList/{curPage}/{pageSize}")
     public String getPageList(@RequestBody TmOriginDataParams tmOriginDataPojo, @PathVariable Integer curPage, @PathVariable Integer pageSize){
+        TmDeviceParams tmDeviceParams = new TmDeviceParams();
+        tmDeviceParams.setEnabled(1);
+        List<TmDevice> deviceList = tmDeviceService.selectList(tmDeviceParams);
+        List<String> clientimeiList = deviceList.stream()
+                .map(TmDevice::getCode)
+                .collect(Collectors.toList());
+        tmOriginDataPojo.setClientimeiList(clientimeiList);
+
+        Map<String, TmDevice> deviceMap = deviceList.stream()
+                .collect(Collectors.toMap(
+                        TmDevice::getCode,
+                        Function.identity()
+                ));
+        //
         PageHelper.startPage(curPage,pageSize);
         PageHelper.orderBy("ic desc");
         List<TmOriginData> list = tmOriginDataService.selectList(tmOriginDataPojo);
-        return returnSuccessPageResult(list,"yyyy-MM-dd HH:mm");
+        for (TmOriginData item : list) {
+            String code = item.getClientimei();
+            item.setSegment(deviceMap.get(code).getSegment());
+            item.setMtype(deviceMap.get(code).getType());
+            item.setLine(deviceMap.get(code).getLine());
+            item.setStakeNumber(deviceMap.get(code).getStakeNumber());
+        }
+        return returnSuccessPageResult(list,"yyyy-MM-dd HH:mm:ss");
     }
 
     @PostMapping("/getPageListCatalogH0/{curPage}/{pageSize}")
@@ -42,16 +66,38 @@ public class TmOriginDataController extends BaseController{
         PageHelper.orderBy("ic desc");
         tmOriginDataPojo.setCatalog("H0");
         List<TmOriginData> list = tmOriginDataService.selectList(tmOriginDataPojo);
-        return returnSuccessPageResult(list,"yyyy-MM-dd HH:mm");
+        return returnSuccessPageResult(list,"yyyy-MM-dd HH:mm:ss");
     }
 
     @PostMapping("/getPageListCatalogS6/{curPage}/{pageSize}")
     public String getPageListCatalogS6(@RequestBody TmOriginDataParams tmOriginDataPojo, @PathVariable Integer curPage, @PathVariable Integer pageSize){
+        TmDeviceParams tmDeviceParams = new TmDeviceParams();
+        tmDeviceParams.setEnabled(1);
+        List<TmDevice> deviceList = tmDeviceService.selectList(tmDeviceParams);
+        List<String> clientimeiList = deviceList.stream()
+                .map(TmDevice::getCode)
+                .collect(Collectors.toList());
+        tmOriginDataPojo.setClientimeiList(clientimeiList);
+
+        Map<String, TmDevice> deviceMap = deviceList.stream()
+                .collect(Collectors.toMap(
+                        TmDevice::getCode,
+                        Function.identity()
+                ));
+        //
         PageHelper.startPage(curPage,pageSize);
         PageHelper.orderBy("ic desc");
         tmOriginDataPojo.setCatalog("S6");
         List<TmOriginData> list = tmOriginDataService.selectList(tmOriginDataPojo);
-        return returnSuccessPageResult(list,"yyyy-MM-dd HH:mm");
+        for (TmOriginData item : list) {
+            String code = item.getClientimei();
+            item.setSegment(deviceMap.get(code).getSegment());
+            item.setMtype(deviceMap.get(code).getType());
+            item.setLine(deviceMap.get(code).getLine());
+            item.setStakeNumber(deviceMap.get(code).getStakeNumber());
+        }
+
+        return returnSuccessPageResult(list,"yyyy-MM-dd HH:mm:ss");
     }
 
     @PostMapping("/getPageListCatalogResult/{curPage}/{pageSize}")

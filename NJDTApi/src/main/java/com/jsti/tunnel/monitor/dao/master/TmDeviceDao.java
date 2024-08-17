@@ -16,4 +16,5 @@ public interface TmDeviceDao {
     void deleteByPrimaryKey(Long id);
     void insert(TmDevice record);
     void updateByPrimaryKey(TmDevice record);
+    void updateByCode(TmDevice record);
 }

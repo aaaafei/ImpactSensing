@@ -52,6 +52,9 @@ public class TmDispositionResultController extends BaseController {
         tmDispositionResultParam.setAlarmRecordId(Long.parseLong(alarmId));
         tmDispositionResultParam.setAlarmType("1");
         List<TmDispositionResult> list = tmDispositionResultService.selectList(tmDispositionResultParam);
+        if (list.isEmpty()) {
+            return returnSuccessResult(new TmDispositionResult());
+        }
         TmDispositionResult tmDispositionResult = list.get(0);
         if (tmDispositionResult.getTeamLeaderUserid() != null){
             tmDispositionResult.setTeamLeaderUsername(userService.getOne(tmDispositionResult.getTeamLeaderUserid()).getTruename());

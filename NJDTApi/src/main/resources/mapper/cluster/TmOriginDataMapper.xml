@@ -31,20 +31,21 @@
 
   <select id="selectList" parameterType="com.jsti.tunnel.monitor.pojo.TmOriginDataParams" resultMap="BaseResultMap">
     select
-      r.ic, r.clientip, r.clientport, r.clientimei, r.catalog, r.catalogval, r.voltage, r.signalval, r.contents, r.timstamp,
-      d.`type`, d.line, d.segment, d.stake_number
+      r.ic, r.clientip, r.clientport, r.clientimei, r.catalog, r.catalogval, r.voltage, r.signalval, r.contents, r.timstamp
+<!--      ,d.`type`, d.line, d.segment, d.stake_number-->
     from rawdata r
-    left join impact_sensing_njdt.tm_device d ON r.clientimei = d.code and d.enabled = '1'
+<!--    left join impact_sensing_njdt.tm_device d ON r.clientimei = d.code and d.enabled = '1'-->
     <where>
-      d.enabled = '1'
-      <if test="clientip!=null">and r.clientip=#{clientip}</if>
-      <if test="clientport!=null">and r.clientport=#{clientport}</if>
-      <if test="clientimei!=null">and r.clientimei=#{clientimei}</if>
-      <if test="catalog!=null">and r.catalog=#{catalog}</if>
-      <if test="catalogval!=null">and r.catalogval=#{catalogval}</if>
-      <if test="signalval!=null">and r.signalval=#{signalval}</if>
-      <if test="beginDate!=null">and r.timstamp>=#{beginDate}</if>
-      <if test="endDate!=null">and #{endDate}>=r.timstamp </if>
+<!--      d.enabled = '1'-->
+      <if test="clientip != null">and r.clientip=#{clientip}</if>
+      <if test="clientport != null">and r.clientport=#{clientport}</if>
+      <if test="clientimei != null">and r.clientimei=#{clientimei}</if>
+      <if test="clientimeiList != null">and r.clientimei in <foreach collection="clientimeiList" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+      <if test="catalog != null">and r.catalog=#{catalog}</if>
+      <if test="catalogval != null">and r.catalogval=#{catalogval}</if>
+      <if test="signalval != null">and r.signalval=#{signalval}</if>
+      <if test="beginDate != null">and r.timstamp>=#{beginDate}</if>
+      <if test="endDate != null">and #{endDate}>=r.timstamp </if>
     </where>
   </select>
 

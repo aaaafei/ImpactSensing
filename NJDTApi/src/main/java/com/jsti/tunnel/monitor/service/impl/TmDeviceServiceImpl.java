@@ -36,23 +36,30 @@ public class TmDeviceServiceImpl implements TmDeviceService {
         TmDeviceParams tmDeviceParams = new TmDeviceParams();
         tmDeviceParams.setCode(deviceCode);
         List<TmDevice> list = tmDeviceDao.selectList(tmDeviceParams);
-        if (list==null) return new TmDevice();
+        if (list==null) {
+            return new TmDevice();
+        }
         return list.get(0);
     }
 
     @Override
     public void insert(TmDevice tmDevice) {
-
+        tmDeviceDao.insert(tmDevice);
     }
 
     @Override
     public void updateByPrimaryKey(TmDevice tmDevice) {
+        tmDeviceDao.updateByPrimaryKey(tmDevice);
+    }
 
+    @Override
+    public void updateByCode(TmDevice tmDevice) {
+        tmDeviceDao.updateByCode(tmDevice);
     }
 
     @Override
     public void deleteByPrimaryKey(Long id) {
-
+        tmDeviceDao.deleteByPrimaryKey(id);
     }
 
 

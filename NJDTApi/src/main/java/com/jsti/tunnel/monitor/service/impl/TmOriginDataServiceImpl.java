@@ -1,13 +1,17 @@
 package com.jsti.tunnel.monitor.service.impl;
 
+import com.jsti.tunnel.monitor.bean.TmDevice;
 import com.jsti.tunnel.monitor.bean.TmOriginData;
 import com.jsti.tunnel.monitor.dao.cluster.TmOriginDataDao;
+import com.jsti.tunnel.monitor.pojo.TmDeviceParams;
 import com.jsti.tunnel.monitor.pojo.TmOriginDataParams;
+import com.jsti.tunnel.monitor.service.TmDeviceService;
 import com.jsti.tunnel.monitor.service.TmOriginDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TmOriginDataServiceImpl implements TmOriginDataService {

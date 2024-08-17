@@ -43,7 +43,9 @@ public class TmDeviceController extends BaseController{
         TmDeviceParams tmDeviceParams = new TmDeviceParams();
         tmDeviceParams.setId(Integer.parseInt(id));
         List<TmDevice> list = tmDeviceService.selectList(tmDeviceParams);
-        if (list == null) return returnResult(0,"Error",null);
+        if (list == null) {
+            return returnResult(0,"Error",null);
+        }
         return returnSuccessResult(list.get(0));
     }
 
@@ -52,7 +54,9 @@ public class TmDeviceController extends BaseController{
         TmDeviceParams tmDeviceParams = new TmDeviceParams();
         tmDeviceParams.setCode(code);
         List<TmDevice> list = tmDeviceService.selectList(tmDeviceParams);
-        if (list == null) return returnResult(0,"Error",null);
+        if (list == null) {
+            return returnResult(0,"Error",null);
+        }
         return returnSuccessResult(list.get(0));
     }
 
@@ -70,17 +74,22 @@ public class TmDeviceController extends BaseController{
 
     @PostMapping(path="/saveDevice")
     public String saveDevice(@RequestBody TmDevice tmDevice, HttpServletRequest request){
+        tmDevice.setCollectTime(null);
+        tmDevice.setRealtimePhysicalData(null);
         if (tmDevice.getId() == 0){
-            tmDeviceService.updateByPrimaryKey(tmDevice);
-        }else {
             tmDeviceService.insert(tmDevice);
+        }else {
+            tmDeviceService.updateByPrimaryKey(tmDevice);
         }
         return returnSuccessResult();
     }
 
-    @PostMapping(path="/deleteDevice")
-    public String deleteDevice(HttpServletRequest request){
-        Long id = Long.valueOf(request.getParameter("id"));
+    @PostMapping(path="/deleteDevice/{id}/{code}")
+    public String deleteDevice(@PathVariable Long id, @PathVariable String code){
+        TmDevice tmDevice = tmDeviceService.selectByPrimaryKey(id);
+        if (!tmDevice.getCode().equals(code)) {
+            returnResult(-1,"删除失败","");
+        }
         tmDeviceService.deleteByPrimaryKey(id);
         return returnSuccessResult();
     }

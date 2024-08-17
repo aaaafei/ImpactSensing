@@ -18,6 +18,7 @@
     <result column="collect_time" jdbcType="TIMESTAMP" property="collectTime" />
     <result column="subsecond" jdbcType="VARCHAR" property="subsecond" />
     <result column="realtime_physical_data" jdbcType="VARCHAR" property="realtimePhysicalData" />
+    <result column="voltage" jdbcType="VARCHAR" property="voltage" />
     <result column="status" property="status" />
     <result column="longitude" property="longitude" />
     <result column="latitude" property="latitude" />
@@ -27,7 +28,7 @@
 
   <sql id="Base_Column_List">
     id, code, `name`, model, `type`, clientip, clientport, device_type, line, segment, stake_number, install_position, serial_number,
-    collect_time, subsecond, realtime_physical_data, status, longitude, latitude, pic1, enabled
+    collect_time, subsecond, realtime_physical_data, voltage, status, longitude, latitude, pic1, enabled
   </sql>
 
   <select id="selectList" parameterType="com.jsti.tunnel.monitor.pojo.TmDeviceParams" resultMap="BaseResultMap">
@@ -64,49 +65,109 @@
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from tm_device
+    update tm_device set enabled = 0
     where id = #{id,jdbcType=BIGINT}
   </delete>
 
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.jsti.tunnel.monitor.bean.TmDevice" useGeneratedKeys="true">
-    insert into tm_device (code, `name`, model, 
-      `type`, device_type, segment, 
-      stake_number, warning_data, signal_out, 
-      measure_range, electricity_supply, install_position, 
-      enabled, serial_number, collect_time, 
-      subsecond, realtime_physical_data)
-    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, 
-      #{type,jdbcType=VARCHAR}, #{deviceType,jdbcType=VARCHAR}, #{segment,jdbcType=VARCHAR}, 
-      #{stakeNumber,jdbcType=VARCHAR}, #{warningData,jdbcType=DECIMAL}, #{signalOut,jdbcType=VARCHAR}, 
-      #{measureRange,jdbcType=VARCHAR}, #{electricitySupply,jdbcType=VARCHAR}, #{installPosition,jdbcType=VARCHAR}, 
-      #{enabled,jdbcType=INTEGER}, #{serialNumber,jdbcType=VARCHAR}, #{collectTime,jdbcType=TIMESTAMP}, 
-      #{subsecond,jdbcType=DECIMAL}, #{realtimePhysicalData,jdbcType=DECIMAL})
+    insert into tm_device
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="code != null">code,</if>
+      <if test="name != null">name,</if>
+      <if test="name != null">name,</if>
+      <if test="model != null">model,</if>
+      <if test="type != null">type,</if>
+      <if test="clientip != null">clientip,</if>
+      <if test="clientport != null">clientport,</if>
+      <if test="deviceType != null">device_type,</if>
+      <if test="line != null">line,</if>
+      <if test="segment != null">segment,</if>
+      <if test="stakeNumber != null">stake_number,</if>
+      <if test="installPosition != null">install_position,</if>
+      <if test="serialNumber != null">serial_number,</if>
+      <if test="collectTime != null">collect_time,</if>
+      <if test="realtimePhysicalData != null">realtime_physical_data,</if>
+      <if test="status != null">status,</if>
+      <if test="longitude != null">longitude,</if>
+      <if test="latitude != null">latitude,</if>
+      <if test="pic1 != null">pic1,</if>
+      <if test="enabled != null">enabled,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="code != null">#{code},</if>
+      <if test="name != null">#{name},</if>
+      <if test="name != null">#{name},</if>
+      <if test="model != null">#{model},</if>
+      <if test="type != null">#{type},</if>
+      <if test="clientip != null">#{clientip},</if>
+      <if test="clientport != null">#{clientport},</if>
+      <if test="deviceType != null">#{deviceType},</if>
+      <if test="line != null">#{line},</if>
+      <if test="segment != null">#{segment},</if>
+      <if test="stakeNumber != null">#{stakeNumber},</if>
+      <if test="installPosition != null">#{installPosition},</if>
+      <if test="serialNumber != null">#{serialNumber},</if>
+      <if test="collectTime != null">#{collectTime},</if>
+      <if test="realtimePhysicalData != null">#{realtimePhysicalData},</if>
+      <if test="status != null">#{status},</if>
+      <if test="longitude != null">#{longitude},</if>
+      <if test="latitude != null">#{latitude},</if>
+      <if test="pic1 != null">#{pic1},</if>
+      <if test="enabled != null">#{enabled},</if>
+    </trim>
   </insert>
-
 
   <update id="updateByPrimaryKey" parameterType="com.jsti.tunnel.monitor.bean.TmDevice">
     update tm_device
-    set code = #{code,jdbcType=VARCHAR},
-      `name` = #{name,jdbcType=VARCHAR},
-      model = #{model,jdbcType=VARCHAR},
-      `type` = #{type,jdbcType=VARCHAR},
-      device_type = #{deviceType,jdbcType=VARCHAR},
-      segment = #{segment,jdbcType=VARCHAR},
-      stake_number = #{stakeNumber,jdbcType=VARCHAR},
-      warning_data = #{warningData,jdbcType=DECIMAL},
-      signal_out = #{signalOut,jdbcType=VARCHAR},
-      measure_range = #{measureRange,jdbcType=VARCHAR},
-      electricity_supply = #{electricitySupply,jdbcType=VARCHAR},
-      install_position = #{installPosition,jdbcType=VARCHAR},
-      enabled = #{enabled,jdbcType=INTEGER},
-      serial_number = #{serialNumber,jdbcType=VARCHAR},
-      collect_time = #{collectTime,jdbcType=TIMESTAMP},
-      subsecond = #{subsecond,jdbcType=DECIMAL},
-      realtime_physical_data = #{realtimePhysicalData,jdbcType=DECIMAL},
-      warning_level = #{warningLevel,jdbcType=INTEGER},
-      status = #{status,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=BIGINT}
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="code != null">code = #{code},</if>
+      <if test="name != null">name = #{name},</if>
+      <if test="name != null">name = #{name},</if>
+      <if test="model != null">model = #{model},</if>
+      <if test="type != null">type = #{type},</if>
+      <if test="clientip != null">clientip = #{clientip},</if>
+      <if test="clientport != null">clientport = #{clientport},</if>
+      <if test="deviceType != null">device_type = #{deviceType},</if>
+      <if test="line != null">line = #{line},</if>
+      <if test="segment != null">segment = #{segment},</if>
+      <if test="stakeNumber != null">stake_number = #{stakeNumber},</if>
+      <if test="installPosition != null">install_position = #{installPosition},</if>
+      <if test="serialNumber != null">serial_number = #{serialNumber},</if>
+      <if test="collectTime != null">collect_time = #{collectTime},</if>
+      <if test="realtimePhysicalData != null">realtime_physical_data = #{realtimePhysicalData},</if>
+      <if test="status != null">status = #{status},</if>
+      <if test="longitude != null">longitude = #{longitude},</if>
+      <if test="latitude != null">latitude = #{latitude},</if>
+      <if test="pic1 != null">pic1 = #{pic1},</if>
+      <if test="enabled != null">enabled = #{enabled},</if>
+    </trim>
+    where id = #{id}
   </update>
 
+  <update id="updateByCode" parameterType="com.jsti.tunnel.monitor.bean.TmDevice">
+    update tm_device
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="name != null">name = #{name},</if>
+      <if test="name != null">name = #{name},</if>
+      <if test="model != null">model = #{model},</if>
+      <if test="type != null">type = #{type},</if>
+      <if test="clientip != null">clientip = #{clientip},</if>
+      <if test="clientport != null">clientport = #{clientport},</if>
+      <if test="deviceType != null">device_type = #{deviceType},</if>
+      <if test="line != null">line = #{line},</if>
+      <if test="segment != null">segment = #{segment},</if>
+      <if test="stakeNumber != null">stake_number = #{stakeNumber},</if>
+      <if test="installPosition != null">install_position = #{installPosition},</if>
+      <if test="serialNumber != null">serial_number = #{serialNumber},</if>
+      <if test="collectTime != null">collect_time = #{collectTime},</if>
+      <if test="realtimePhysicalData != null">realtime_physical_data = #{realtimePhysicalData},</if>
+      <if test="voltage != null">voltage = #{voltage},</if>
+      <if test="status != null">status = #{status},</if>
+      <if test="longitude != null">longitude = #{longitude},</if>
+      <if test="latitude != null">latitude = #{latitude},</if>
+      <if test="pic1 != null">pic1 = #{pic1},</if>
+    </trim>
+    where code = #{code} and enabled = 1
+  </update>
 
 </mapper>

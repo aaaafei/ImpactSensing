@@ -15,8 +15,6 @@
     <result column="install_position" jdbcType="VARCHAR" property="installPosition" />
     <result column="device_code" jdbcType="VARCHAR" property="deviceCode" />
     <result column="line" jdbcType="VARCHAR" property="line" />
-    <result column="device2_code" jdbcType="VARCHAR" property="device2Code" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
     id, deviceid, val, warning_value, collect_time, warning_level, remark, status
@@ -29,10 +27,9 @@
   </select>
   <select id="selectDataList" parameterType="java.util.Map" resultMap="BaseResultMap">
     select
-    wr.*, d.type, d.segment, d.stake_number, d.install_position, d.code as device_code, d.line, d2.`code` as device2_code
+    wr.*, d.type, d.segment, d.stake_number, d.install_position, d.line, d.code as device_code
     from tm_warning_records wr
-    LEFT JOIN tm_device d ON d.id = wr.deviceid
-    LEFT JOIN tm_device d2 ON d2.id = wr.remark
+    LEFT JOIN tm_device d ON d.code = wr.deviceid
     <where>
         <if test="deviceid!=null">deviceid=#{deviceid}</if>
         <if test="warning_level!=null">and warning_level!=null</if>
@@ -47,10 +44,10 @@
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.jsti.tunnel.monitor.bean.TmWarningRecords" useGeneratedKeys="true">
     insert into tm_warning_records (deviceid, val, warning_value, 
-      collect_time, warning_level, remark, status
+      collect_time, warning_level, remark
       )
     values (#{deviceid,jdbcType=VARCHAR}, #{val,jdbcType=DECIMAL}, #{warningValue,jdbcType=DECIMAL}, 
-      #{collectTime,jdbcType=TIMESTAMP}, #{warningLevel,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{status}
+      #{collectTime,jdbcType=TIMESTAMP}, #{warningLevel,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.jsti.tunnel.monitor.bean.TmWarningRecords">
