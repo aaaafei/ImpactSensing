@@ -35,6 +35,9 @@ public class TmWarningRecordsController  extends BaseController{
         if(pojo.getTimeRangeEnd()!=null) {
             params.put("timeRangeEnd",pojo.getTimeRangeEnd());
         }
+        if(pojo.getSearch()!=null) {
+            params.put("search",pojo.getSearch());
+        }
         PageHelper.startPage(curPage,pageSize);
 
         List<TmWarningRecords> list = tmWarningRecordsService.selectDataList(params);

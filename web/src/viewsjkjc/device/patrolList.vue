@@ -24,7 +24,7 @@
     </el-row>
     <div style="height:10px;"></div>
 
-    <el-table :data="deviceList" :height="600" border stripe 
+    <!-- <el-table :data="deviceList" :height="600" border stripe 
       :header-cell-style="{ background: '#A1B6D8', color: '#fff' }">
       <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
       <el-table-column prop="code" label="设备IMEI" align="center"></el-table-column>
@@ -32,37 +32,29 @@
       <el-table-column prop="line" label="线路" align="center"></el-table-column>
       <el-table-column prop="segment" label="区间" align="center"></el-table-column>
       <el-table-column prop="stakeNumber" label="桩号、桥墩号" align="center"></el-table-column>
-      <!-- <el-table-column prop="_pic" label="现场安装图片" width="280" align="center">
-        <template slot-scope='scope'>
-          <img :src="item" alt="" v-for="(item,index) in images" :key="index" style="height: 40px;margin-left: 2px;" @click="previewImage(item)">
-        </template>
-      </el-table-column> -->
       <el-table-column prop="_tx" label="检修记录" width="120" align="center">
         <template slot-scope='scope'>
           <span style="color:#1684FC;cursor: pointer;" @click="openDisposeRecordDialog">0次</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column prop="_sz" label="更换记录" width="120" align="center">
-        <template slot-scope='scope'>
-          <span style="color:#1684FC">无</span>
-        </template>
-      </el-table-column> -->
-      <!-- <el-table-column prop="_oper" label="操作" width="120" align="center">
-        <template slot-scope='scope'>
-          <el-button size="mini" plain type="primary">设备详情</el-button>
-        </template>
-      </el-table-column> -->
     </el-table>
     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="page.pageNum" :page-sizes="[10, 20, 50]" :page-size="page.pageSize"
       layout="total, sizes, prev, pager, next, jumper" :total="page.total" style="float: left;"></el-pagination>
-
     <dispose-record-table :disposeRecordDialog = "disposeRecordDialog" @changeDisposeRecordDialog="changeDisposeRecordDialog"></dispose-record-table>
 
     <el-dialog title="" :visible.sync="imgDialogVisible" width="50%">
       <div style="height:600px;text-align: center;">
         <img :src="previewImg" alt="" style="height: 100%;">
       </div>
-    </el-dialog>
+    </el-dialog> -->
+
+    <el-table :data="patrolList" :height="600" border stripe 
+      :header-cell-style="{ background: '#A1B6D8', color: '#fff' }">
+      <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+      <el-table-column prop="position" label="地点" align="center"></el-table-column>
+      <el-table-column prop="content" label="工作内容" align="center"></el-table-column>
+      <el-table-column prop="date" label="时间" align="center"></el-table-column>
+    </el-table>
 
   </div>
 </template>
@@ -88,6 +80,7 @@ export default {
       imgDialogVisible: false,
       images: [this.$STATIC_PREFIX+'images/demo/xc001.png',this.$STATIC_PREFIX+'images/demo/xc002.png',this.$STATIC_PREFIX+'images/demo/xc003.png'],
       previewImg: '',
+      patrolList: []
     };
   },
   methods: {
@@ -122,6 +115,15 @@ export default {
         this.page.pageNum = data.pageNum;
         this.page.pageSize = data.pageSize;
         this.deviceList = data.list;
+
+        this.patrolList = [
+          {position:'刘村-马骡圩区间14号桥墩', content:'现场设备检查，通讯模块调试', date:'2024-03-23'},
+          {position:'迈皋桥-晓庄区间13号桥墩附近', content:'记录现场设备损坏情况', date:'2024-03-24'},
+          {position:'刘村-马骡圩区间14号桥墩', content:'现场设备检查，微损修复', date:'2024-07-11'},
+          {position:'迈皋桥-晓庄区间13号桥墩附近', content:'现场设备检查', date:'2024-07-16'},
+          {position:'刘村-马骡圩区间14号桥墩', content:'现场设备检查', date:'2024-09-29'},
+          {position:'迈皋桥-晓庄区间13号桥墩附近', content:'现场设备检查', date:'2024-09-29'},
+        ]
       });
     },
   },

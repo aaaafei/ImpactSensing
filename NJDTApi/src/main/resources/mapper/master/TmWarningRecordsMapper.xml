@@ -36,6 +36,7 @@
         <if test="collect_time!=null">and wr.collect_time = #{collect_time}</if>
         <if test="timeRangeBegin!=null">and wr.collect_time >= #{timeRangeBegin}</if>
         <if test="timeRangeEnd!=null">and {timeRangeEnd} >= wr.collect_time</if>
+        <if test="search!=null">and concat(d.code, d.line, d.segment) like concat('%',#{search}, '%')</if>
     </where>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
