@@ -40,14 +40,26 @@
       </el-table-column>
       <el-table-column prop="_tx" label="通信部件" width="120" align="center">
         <template slot-scope='scope'>
-          <el-button type="success" size="mini" :circle="true" icon="el-icon-check"></el-button>
-          <span style="color:#1684FC">运行正常</span>
+          <div v-if="scope.row.enabled==1">
+            <el-button type="success" size="mini" :circle="true" icon="el-icon-check"></el-button>
+            <span style="color:#1684FC">运行正常</span>
+          </div>
+          <div v-if="scope.row.enabled==0">
+            <el-button type="danger" size="mini" :circle="true" icon="el-icon-close"></el-button>
+            <span style="color:#f46c6c">已停止</span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column prop="_sz" label="受撞部件" width="120" align="center">
         <template slot-scope='scope'>
-          <el-button type="primary" size="mini" :circle="true" icon="el-icon-check"></el-button>
-          <span style="color:#1684FC">无撞击</span>
+          <div v-if="scope.row.enabled==1">
+            <el-button type="primary" size="mini" :circle="true" icon="el-icon-check"></el-button>
+            <span style="color:#1684FC">无撞击</span>
+          </div>
+          <div v-if="scope.row.enabled==0">
+            <!-- <el-button type="primary" size="mini" :circle="true" icon="el-icon-check"></el-button> -->
+            <span style="color:#f46c6c">已停止</span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column prop="_oper" label="操作" width="250" align="center">

@@ -57,5 +57,5 @@ public class TmDevice implements Serializable {
 
     private String  pic1;
 
-    private int enabled;
+    private Integer enabled;
 }

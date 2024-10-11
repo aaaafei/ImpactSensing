@@ -6,7 +6,7 @@
           <el-row type="flex" :gutter="20" style="margin-top: 25px;">
             <el-col :span="18" :offset="0">
               <div style="font-size: 32px;color:#1684FC;">{{ deviceMap.segment  + '(' + deviceMap.stakeNumber + ')'}}</div>
-              <el-progress :percentage="deviceMap.electricPercentage"></el-progress>
+              <!-- <el-progress :percentage="deviceMap.electricPercentage"></el-progress> -->
             </el-col>
             <el-col :span="6" :offset="0" style="text-align: center;">
               <el-button type="success" :circle=true icon="el-icon-check"></el-button>
@@ -91,8 +91,8 @@ export default {
         this.deviceInfo = [
         { label: "设备IMEI", value: data.code },
         { label: "监测项目", value: data.type },
-        { label: "电池余量", value: data.electricPercentage + '%' },
-        { label: "电池容量", value: "450mAh" },
+        // { label: "电池余量", value: data.electricPercentage + '%' },
+        // { label: "电池容量", value: "450mAh" },
         { label: "线路", value: data.line },
         { label: "区间", value: data.segment },
         { label: "桩号/桥墩号", value: data.stakeNumber },
