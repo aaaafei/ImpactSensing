@@ -35,8 +35,11 @@ public class TmWarningRecordsController  extends BaseController{
         if(pojo.getTimeRangeEnd()!=null) {
             params.put("timeRangeEnd",pojo.getTimeRangeEnd());
         }
-        PageHelper.startPage(curPage,pageSize);
-
+//        if(pojo.getFirst()!=null) {
+//            params.put("fisrt",pojo.getFirst());
+//        }
+        params.put("first",1);
+        PageHelper.startPage(curPage,pageSize, "wr.collect_time desc");
         List<TmWarningRecords> list = tmWarningRecordsService.selectDataList(params);
         return super.returnSuccessPageResult(list);
     }

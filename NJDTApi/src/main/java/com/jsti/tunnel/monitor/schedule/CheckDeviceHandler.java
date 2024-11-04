@@ -71,7 +71,12 @@ public class CheckDeviceHandler {
 		List<String> deviceCollectTimeList = warningRecordsList.stream()
 				.map(item -> item.getDeviceid() + "_" + item.getCollectTime().getTime())
 				.collect(Collectors.toList());
+		TmOriginData lastData = dataList.get(0);
 		for (TmOriginData dataItem : dataList) {
+			TmWarningRecords tmWarningRecords = new TmWarningRecords();
+			if (lastData.getCatalogval().equals("1") && !dataItem.getCatalogval().equals("1")) {
+				tmWarningRecords.setFirst(1);
+			}
 			// 异常记录写入warningRecords表
 			if (dataItem.getCatalogval().equals("1")) {
 				continue;
@@ -80,11 +85,13 @@ public class CheckDeviceHandler {
 			if (deviceCollectTimeList.contains(dataId)) {
 				continue;
 			}
-			TmWarningRecords tmWarningRecords = new TmWarningRecords();
+
 			tmWarningRecords.setDeviceid(dataItem.getClientimei());
 			tmWarningRecords.setCollectTime(dataItem.getTimstamp());
 			tmWarningRecords.setVal(dataItem.getCatalogval());
 			tmWarningRecords.setRemark("运行异常，现场可能受撞击，请现场查看");
+			//
+
 			checkDeviceHandler.tmWarningRecordsService.insert(tmWarningRecords);
 		}
 

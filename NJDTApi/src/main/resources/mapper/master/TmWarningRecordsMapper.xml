@@ -15,6 +15,7 @@
     <result column="install_position" jdbcType="VARCHAR" property="installPosition" />
     <result column="device_code" jdbcType="VARCHAR" property="deviceCode" />
     <result column="line" jdbcType="VARCHAR" property="line" />
+    <result column="first" jdbcType="INTEGER" property="first" />
   </resultMap>
   <sql id="Base_Column_List">
     id, deviceid, val, warning_value, collect_time, warning_level, remark, status
@@ -35,7 +36,8 @@
         <if test="warning_level!=null">and warning_level!=null</if>
         <if test="collect_time!=null">and wr.collect_time = #{collect_time}</if>
         <if test="timeRangeBegin!=null">and wr.collect_time >= #{timeRangeBegin}</if>
-        <if test="timeRangeEnd!=null">and {timeRangeEnd} >= wr.collect_time</if>
+        <if test="timeRangeEnd!=null">and #{timeRangeEnd} >= wr.collect_time</if>
+        <if test="first!=null">and wr.first = #{first}</if>
     </where>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
