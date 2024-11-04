@@ -10,4 +10,5 @@ public class TmWarningRecordsParams extends TmWarningRecords {
     private Date timeRangeBegin;
     private Date timeRangeEnd;
     private boolean latestBatch;
+    private String search;
 }

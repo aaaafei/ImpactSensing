@@ -5,4 +5,5 @@ import lombok.Data;
 
 @Data
 public class TmDeviceParams extends TmDevice {
+    String search;
 }

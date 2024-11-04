@@ -18,7 +18,7 @@
         </div>
       </el-col>
       <el-col :span="5">
-        <el-input placeholder="设备编码、设备名称、线路、桩号、桥墩号" prefix-icon="el-icon-search" v-model="search">
+        <el-input placeholder="设备IMEI，线路，区间" prefix-icon="el-icon-search" v-model="search" clearable>
         </el-input>
       </el-col>
       <el-col :span="2" style="text-align: center;">

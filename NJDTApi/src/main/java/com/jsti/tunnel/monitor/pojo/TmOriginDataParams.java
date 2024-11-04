@@ -16,4 +16,5 @@ public class TmOriginDataParams extends TmOriginData {
     Date endDate;
 	boolean needDataFilter = true;
 	List<String> clientimeiList;
+	String search;
 }

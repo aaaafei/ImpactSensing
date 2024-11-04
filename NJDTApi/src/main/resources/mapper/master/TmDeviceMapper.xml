@@ -36,7 +36,7 @@
     <include refid="Base_Column_List" />
     from tm_device
     <where>
-        enabled = '1'
+        1 = 1
         <if test="name !=null">and name like CONCAT('%',#{name},'%')</if>
         <if test="code !=null">and code like CONCAT('%',#{code},'%')</if>
         <if test="model !=null">and model=#{model}</if>
@@ -44,6 +44,8 @@
         <if test="segment !=null">and segment=#{segment}</if>
         <if test="line !=null">and line=#{line}</if>
         <if test="status !=null">and status=#{status}</if>
+        <if test="enabled !=null">and enabled=#{enabled}</if>
+        <if test="search !=null">and CONCAT(code, line, segment) LIKE CONCAT('%',#{search},'%')</if>
     </where>
   </select>
   

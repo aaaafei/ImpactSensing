@@ -72,7 +72,8 @@ public class TmOriginDataController extends BaseController{
     @PostMapping("/getPageListCatalogS6/{curPage}/{pageSize}")
     public String getPageListCatalogS6(@RequestBody TmOriginDataParams tmOriginDataPojo, @PathVariable Integer curPage, @PathVariable Integer pageSize){
         TmDeviceParams tmDeviceParams = new TmDeviceParams();
-        tmDeviceParams.setEnabled(1);
+//        tmDeviceParams.setEnabled(1);
+        tmDeviceParams.setSearch(tmOriginDataPojo.getSearch());
         List<TmDevice> deviceList = tmDeviceService.selectList(tmDeviceParams);
         List<String> clientimeiList = deviceList.stream()
                 .map(TmDevice::getCode)
