@@ -3,12 +3,10 @@ package com.jsti.tunnel.monitor.controller;
 import com.github.pagehelper.PageHelper;
 import com.jsti.tunnel.monitor.bean.TmDevice;
 import com.jsti.tunnel.monitor.bean.TmOriginData;
-import com.jsti.tunnel.monitor.bean.TmSubside;
 import com.jsti.tunnel.monitor.pojo.TmDeviceParams;
 import com.jsti.tunnel.monitor.pojo.TmOriginDataParams;
 import com.jsti.tunnel.monitor.service.TmDeviceService;
 import com.jsti.tunnel.monitor.service.TmOriginDataService;
-import com.jsti.tunnel.monitor.util.DeviceDataUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,7 +125,7 @@ public class TmOriginDataController extends BaseController{
             }
             hh++;
             ss++;
-            if(list.size()>=pageSize) break;
+            if(list.size()>=pageSize) {break;}
         }
         return returnSuccessPageResult(list,"yyyy-MM-dd HH:mm");
     }

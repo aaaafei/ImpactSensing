@@ -35,19 +35,18 @@ public class TmWarningRecordsController  extends BaseController{
         if(pojo.getTimeRangeEnd()!=null) {
             params.put("timeRangeEnd",pojo.getTimeRangeEnd());
         }
-<<<<<<< HEAD
+
 //        if(pojo.getFirst()!=null) {
 //            params.put("fisrt",pojo.getFirst());
 //        }
         params.put("first",1);
         PageHelper.startPage(curPage,pageSize, "wr.collect_time desc");
-=======
+
         if(pojo.getSearch()!=null) {
             params.put("search",pojo.getSearch());
         }
         PageHelper.startPage(curPage,pageSize);
 
->>>>>>> e4f976ae1f819a0752f6f1e1d6f18e6debd28f1f
         List<TmWarningRecords> list = tmWarningRecordsService.selectDataList(params);
         return super.returnSuccessPageResult(list);
     }
