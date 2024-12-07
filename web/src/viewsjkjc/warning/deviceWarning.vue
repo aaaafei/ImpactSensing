@@ -41,9 +41,9 @@
       <el-table-column prop="collectTime" label="时间" width="180" align="center"></el-table-column>
       <el-table-column prop="status" label="当前处置进度" align="center">
         <template slot-scope="scope">
-          <el-tag type="primary" v-if="scope.row.status == '1'">待班组长任务分配</el-tag>
-          <el-tag type="warning" v-if="scope.row.status == '2'">待班组成员现场确认、申请消警</el-tag>
-          <el-tag type="success" v-if="scope.row.status == '3'">消警审核（班组长）</el-tag>
+          <el-tag type="warning" v-if="scope.row.status == '1'">班组长任务分配</el-tag>
+          <el-tag type="warning" v-if="scope.row.status == '2'">班组成员现场确认、申请消警</el-tag>
+          <el-tag type="warning" v-if="scope.row.status == '3'">消警审核（班组长）</el-tag>
           <el-tag type="success" v-if="scope.row.status == '99'">已处置完成</el-tag>
         </template>
       </el-table-column>
@@ -156,7 +156,15 @@
       <el-form :model="resultForm" label-width="150px">
         <el-input type="hidden" v-model="resultForm.id"></el-input>
         <el-form-item label="责任班组">
-          <el-input v-model="resultForm.orgname"></el-input>
+          <!-- <el-input v-model="resultForm.orgname"></el-input> -->
+          <el-select v-model="resultForm.orgname" placeholder="请选择处理班组" @change="handleDeptChange">
+            <el-option
+              v-for="item in deptList"
+              :key="item.id"
+              :label="item.organname"
+              :value="item.id">
+            </el-option>
+          </el-select>
         </el-form-item>
         <!-- <el-form-item label="班组长">
           <el-input v-model="form.position"></el-input>
@@ -250,6 +258,7 @@ export default {
       alarmForm: {},
       resultForm:{},
       processForm:{},
+      deptList: [],
       userlist: [],
       processList: [],
     };
@@ -294,7 +303,23 @@ export default {
         // data: param
       }).then(res => {
         this.resultForm  = res.data.result_data;
-        this.$request({
+        this.resultForm.alarmRecordId = id;
+        this.getDepts();
+        this.getUsers();
+      });
+    },
+    getDepts() {
+      this.$request({
+          url: '/dept/getDeptInfo',
+          method: 'post',
+          data: {deptype: '20'}
+        }).then(res => {
+          this.deptList  = res.data.result_data;
+          console.log(this.deptList);
+        });
+    },
+    getUsers() {
+      this.$request({
           url: '/user/getUserList',
           method: 'post',
           data: {organid: this.resultForm.orgid}
@@ -302,7 +327,16 @@ export default {
           this.userlist  = res.data.result_data;
           console.log(this.userlist);
         });
-      });
+    },
+    handleDeptChange(value){
+      const selectedOption = this.deptList.find(option => option.id === value);
+      console.log(selectedOption);
+      this.resultForm.orgid = value;
+      this.resultForm.orgname = selectedOption.organname;
+      this.getUsers();
+      
+      
+      
     },
     openDialog2(id){
       this.dialog2Visible = true;
@@ -312,6 +346,7 @@ export default {
         // data: param
       }).then(res => {
         this.resultForm  = res.data.result_data;
+        this.resultForm.alarmRecordId = id;
       });
     },
     openDialog3(form){
@@ -344,6 +379,8 @@ export default {
       });
     },
     saveDispatch() {
+      console.log(this.resultForm);
+      
       this.$request({
         url: '/tmdispositionresult/saveDispatch',
         method: 'post',
